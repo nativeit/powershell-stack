@@ -1,0 +1,75 @@
+[submodule "native-rmm"]
+	path = native-rmm
+	url = https://github.com/nativeit/native-rmm.git
+[submodule "Carbon"]
+	path = Carbon
+	url = https://github.com/webmd-health-services/Carbon.git
+[submodule "7Zip4Powershell"]
+	path = 7Zip4Powershell
+	url = https://github.com/thoemmi/7Zip4Powershell.git
+[submodule "PSWritePDF"]
+	path = PSWritePDF
+	url = https://github.com/EvotecIT/PSWritePDF.git
+[submodule "PSWriteExcel"]
+	path = PSWriteExcel
+	url = https://github.com/EvotecIT/PSWriteExcel.git
+[submodule "PSEventViewer"]
+	path = PSEventViewer
+	url = https://github.com/EvotecIT/PSEventViewer.git
+[submodule "OpenCloudConfig"]
+	path = OpenCloudConfig
+	url = https://github.com/mozilla-releng/OpenCloudConfig.git
+[submodule "PSPrivilege"]
+	path = PSPrivilege
+	url = https://github.com/jborean93/PSPrivilege.git
+[submodule "PSWriteHTML"]
+	path = PSWriteHTML
+	url = https://github.com/EvotecIT/PSWriteHTML.git
+[submodule "Pscx"]
+	path = Pscx
+	url = https://github.com/Pscx/Pscx.git
+[submodule "WaykAgent-ps"]
+	path = WaykAgent-ps
+	url = https://github.com/Devolutions/WaykAgent-ps.git
+[submodule "WaykClient-ps"]
+	path = WaykClient-ps
+	url = https://github.com/Devolutions/WaykClient-ps.git
+[submodule "RdmHelper-ps"]
+	path = RdmHelper-ps
+	url = https://github.com/Devolutions/RdmHelper-ps.git
+[submodule "SMBIOS"]
+	path = SMBIOS
+	url = https://github.com/vanso/SMBIOS.git
+[submodule "PowerShell-Script-Menu-Gui"]
+	path = PowerShell-Script-Menu-Gui
+	url = https://github.com/dan-osull/PowerShell-Script-Menu-Gui.git
+[submodule "IPv4Toolbox"]
+	path = IPv4Toolbox
+	url = https://github.com/roberttoups/IPv4Toolbox.git
+[submodule "PoshInternals"]
+	path = PoshInternals
+	url = https://github.com/adamdriscoll/PoshInternals.git
+[submodule "AdminToolbox"]
+	path = AdminToolbox
+	url = https://github.com/TheTaylorLee/AdminToolbox.git
+[submodule "pwsh.fw.core"]
+	path = pwsh.fw.core
+	url = https://gitlab.com/pwsh.fw/pwsh.fw.core.git
+[submodule "GraphicalTools"]
+	path = GraphicalTools
+	url = https://github.com/PowerShell/GraphicalTools.git
+[submodule "PSWinGlue"]
+	path = PSWinGlue
+	url = https://github.com/ralish/PSWinGlue.git
+[submodule "Transferetto"]
+	path = Transferetto
+	url = https://github.com/EvotecIT/Transferetto.git
+[submodule "set-wallpaper"]
+	path = set-wallpaper
+	url = https://github.com/federico-paolillo/set-wallpaper.git
+[submodule "PScribo"]
+	path = PScribo
+	url = https://github.com/iainbrighton/PScribo
+[submodule "PSWinDocumentation.AD"]
+	path = PSWinDocumentation.AD
+	url = https://github.com/EvotecIT/PSWinDocumentation.AD.git
