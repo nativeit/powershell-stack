@@ -1,0 +1,101 @@
+[
+  {
+    "error": {
+      "message": "ImportError: No module named win32api",
+      "comment": "This error shows up in Firefox build logs during the tooltool artifact download step."
+    },
+    "diagnosis": {
+      "summary": "In Mozilla Firefox Windows builds, this error occurs when the local system python (or the virtual environment where python is running) does not have pypiwin32 installed."
+    },
+    "resolution": {
+      "instructions": [
+        "Install pypiwin32"
+      ],
+      "artifacts": [
+        "https://pypi.python.org/packages/cp27/p/pypiwin32/pypiwin32-219-cp27-none-win_amd64.whl#md5=d7bafcf3cce72c3ce9fdd633a262c335",
+        "https://pypi.python.org/packages/cp27/p/pypiwin32/pypiwin32-219-cp27-none-win32.whl#md5=a8b0c1b608c1afeb18cd38d759ee5e29"
+      ]
+    }
+  },
+  {
+    "error": {
+      "message": "The program can't start because MSVCR100.dll is missing from your computer. Try reinstalling the program to fix this problem.",
+      "comment": "This error shows up in a Windows graphical error message dialogue that pops up in the user environment"
+    },
+    "diagnosis": {
+      "summary": "In Mozilla Firefox Windows builds, this error occurs when an attempt is made to run a yasm assembler, which has a dependency on C:\\Windows\\System32\\msvcr100.dll and C:\\Windows\\SysWOW64\\msvcr100.dll."
+    },
+    "resolution": {
+      "instructions": [
+        "Install both the x86 and x64 Microsoft Visual C++ 2010 Redistributable packages"
+      ],
+      "artifacts": [
+        "http://download.microsoft.com/download/C/6/D/C6D0FD4E-9E53-4897-9B91-836EBA2AACD3/vcredist_x86.exe",
+        "http://download.microsoft.com/download/A/8/0/A80747C3-41BD-45DF-B505-E9710D2744E0/vcredist_x64.exe"
+      ]
+    }
+  },
+  {
+    "error": {
+      "message": "The program can't start because MSVCR120.dll is missing from your computer. Try reinstalling the program to fix this problem.",
+      "comment": "This error shows up in a Windows graphical error message dialogue that pops up in the user environment"
+    },
+    "diagnosis": {
+      "summary": "In Mozilla Firefox Windows builds, this error occurs when an attempt is made to run a rustc compiler, which has a dependency on C:\\Windows\\System32\\msvcr120.dll and C:\\Windows\\SysWOW64\\msvcr120.dll."
+    },
+    "resolution": {
+      "instructions": [
+        "Install both the x86 and x64 Microsoft Visual C++ 2013 Redistributable packages"
+      ],
+      "artifacts": [
+        "http://download.microsoft.com/download/2/E/6/2E61CFA4-993B-4DD4-91DA-3737CD5CD6E3/vcredist_x86.exe",
+        "http://download.microsoft.com/download/2/E/6/2E61CFA4-993B-4DD4-91DA-3737CD5CD6E3/vcredist_x64.exe"
+      ]
+    }
+  },
+  {
+    "error": {
+      "message": "configure: error: DirectX SDK at C:/Program Files (x86)/Microsoft DirectX SDK (June 2010) appears broken.",
+      "comment": "This error shows up in 32 bit Firefox build logs during the old-configure step."
+    },
+    "diagnosis": {
+      "summary": "In Mozilla Firefox Windows builds, this error occurs when the configure step attempts to locate the path to D3DCompiler_43_x86.cab"
+    },
+    "resolution": {
+      "instructions": [
+        "If the cab file exists on the filesysten (under C:\\Program Files (x86)\\Microsoft DirectX SDK (June 2010)\\Redist), the problem may be with the path to \"C:\\mozilla-build\\msys\\bin\\find.exe\" having a lower priority than \"C:\\Windows\\System32\\find.exe\". Change the resolution order in the PATH environment variable to give priority to msys find."
+      ]
+    }
+  },
+  {
+    "error": {
+      "message": "configure: error: This version (..) of the MSVC compiler is unsupported.",
+      "comment": "This error shows up in 32 bit Firefox build logs during the old-configure step."
+    },
+    "diagnosis": {
+      "summary": "Not diagnoed"
+    },
+    "resolution": {
+      "instructions": [
+        "Unresolved"
+      ],
+      "artifacts": []
+    }
+  },
+  {
+    "error": {
+      "message": "configure: error: cannot compile for x86_64-pc-windows-msvc with C:/Users/Task_1461264561/build/src/rustc/bin/rustc",
+      "comment": "This error shows up in 64 bit Firefox build logs during the old-configure step."
+    },
+    "diagnosis": {
+      "summary": "Not diagnoed"
+    },
+    "resolution": {
+      "instructions": [
+        "Unresolved"
+      ],
+      "artifacts": []
+    }
+  }
+]
+

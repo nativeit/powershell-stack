@@ -1,0 +1,234 @@
+[
+  {
+    "os_caption": "Microsoft Windows Server 2016 Datacenter",
+    "product_key": "CB7KF-BWN84-R7R2Y-793K2-8XDDG"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2016 Standard",
+    "product_key": "WC2BQ-8NRM3-FDDYY-2BFGV-KHKQY"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2016 Essentials",
+    "product_key": "JCKRF-N37P4-C2D82-9YXRT-4M63B"
+  },
+  {
+    "os_caption": "Microsoft Windows 10 Professional",
+    "product_key": "W269N-WFGWX-YVC9B-4J6C9-T83GX"
+  },
+  {
+    "os_caption": "Microsoft Windows 10 Pro",
+    "product_key": "W269N-WFGWX-YVC9B-4J6C9-T83GX"
+  },
+  {
+    "os_caption": "Microsoft Windows 10 Professional N",
+    "product_key": "MH37W-N47XK-V7XM9-C7227-GCQG9"
+  },
+  {
+    "os_caption": "Microsoft Windows 10 Enterprise",
+    "product_key": "NPPR9-FWDCX-D2C8J-H872K-2YT43"
+  },
+  {
+    "os_caption": "Microsoft Windows 10 Enterprise N",
+    "product_key": "DPH2V-TTNVB-4X9Q3-TJR4H-KHJW4"
+  },
+  {
+    "os_caption": "Microsoft Windows 10 Education",
+    "product_key": "NW6C2-QMPVW-D7KKK-3GKT6-VCFB2"
+  },
+  {
+    "os_caption": "Microsoft Windows 10 Education N",
+    "product_key": "2WH4N-8QGBV-H22JP-CT43Q-MDWWJ"
+  },
+  {
+    "os_caption": "Microsoft Windows 10 Enterprise 2015 LTSB",
+    "product_key": "WNMTR-4C88C-JK8YV-HQ7T2-76DF9"
+  },
+  {
+    "os_caption": "Microsoft Windows 10 Enterprise 2015 LTSB N",
+    "product_key": "2F77B-TNFGY-69QQF-B8YKP-D69TJ"
+  },
+  {
+    "os_caption": "Microsoft Windows 10 Enterprise 2016 LTSB",
+    "product_key": "DCPHK-NFMTC-H88MJ-PFHPY-QJ4BJ"
+  },
+  {
+    "os_caption": "Microsoft Windows 10 Enterprise 2016 LTSB N",
+    "product_key": "QFFDN-GRT3P-VKWWX-X7T3R-8B639"
+  },
+  {
+    "os_caption": "Microsoft Windows 8.1 Professional",
+    "product_key": "GCRJD-8NW9H-F2CDX-CCM8D-9D6T9"
+  },
+  {
+    "os_caption": "Microsoft Windows 8.1 Professional N",
+    "product_key": "HMCNV-VVBFX-7HMBH-CTY9B-B4FXY"
+  },
+  {
+    "os_caption": "Microsoft Windows 8.1 Enterprise",
+    "product_key": "MHF9N-XY6XB-WVXMC-BTDCT-MKKG7"
+  },
+  {
+    "os_caption": "Microsoft Windows 8.1 Enterprise N",
+    "product_key": "TT4HM-HN7YT-62K67-RGRQJ-JFFXW"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2012 R2 Standard",
+    "product_key": "D2N9P-3P6X9-2R39C-7RTCD-MDVJX"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2012 R2 Datacenter",
+    "product_key": "W3GGN-FT8W3-Y4M27-J84CP-Q3VJ9"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2012 R2 Essentials",
+    "product_key": "KNC87-3J2TX-XB4WP-VCPJV-M4FWM"
+  },
+  {
+    "os_caption": "Microsoft Windows 8 Professional",
+    "product_key": "NG4HW-VH26C-733KW-K6F98-J8CK4"
+  },
+  {
+    "os_caption": "Microsoft Windows 8 Professional N",
+    "product_key": "XCVCF-2NXM9-723PB-MHCB7-2RYQQ"
+  },
+  {
+    "os_caption": "Microsoft Windows 8 Enterprise",
+    "product_key": "32JNW-9KQ84-P47T8-D8GGY-CWCK7"
+  },
+  {
+    "os_caption": "Microsoft Windows 8 Enterprise N",
+    "product_key": "JMNMF-RHW7P-DMY6X-RF3DR-X2BQT"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2012",
+    "product_key": "BN3D2-R7TKB-3YPBD-8DRP2-27GG4"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2012 N",
+    "product_key": "8N2M2-HWPGY-7PGT9-HGDD8-GVGGY"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2012 Single Language",
+    "product_key": "2WN2H-YGCQR-KFX6K-CD6TF-84YXQ"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2012 Country Specific",
+    "product_key": "4K36P-JN4VD-GDC6V-KDT89-DYFKP"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2012 Server Standard",
+    "product_key": "XC9B7-NBPP2-83J2H-RHMBY-92BT4"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2012 MultiPoint Standard",
+    "product_key": "HM7DN-YVMH3-46JC3-XYTG7-CYQJJ"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2012 MultiPoint Premium",
+    "product_key": "XNH6W-2V9GX-RGJ4K-Y8X6F-QGJ2G"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2012 Datacenter",
+    "product_key": "48HP8-DN98B-MYWDG-T2DCC-8W83P"
+  },
+  {
+    "os_caption": "Microsoft Windows 7 Professional",
+    "product_key": "FJ82H-XT6CR-J8D7P-XQJJ2-GPDD4"
+  },
+  {
+    "os_caption": "Microsoft Windows 7 Professional N",
+    "product_key": "MRPKT-YTG23-K7D7T-X2JMM-QY7MG"
+  },
+  {
+    "os_caption": "Microsoft Windows 7 Professional E",
+    "product_key": "W82YF-2Q76Y-63HXB-FGJG9-GF7QX"
+  },
+  {
+    "os_caption": "Microsoft Windows 7 Enterprise",
+    "product_key": "33PXH-7Y6KF-2VJC9-XBBR8-HVTHH"
+  },
+  {
+    "os_caption": "Microsoft Windows 7 Enterprise N",
+    "product_key": "YDRBP-3D83W-TY26F-D46B2-XCKRJ"
+  },
+  {
+    "os_caption": "Microsoft Windows 7 Enterprise E",
+    "product_key": "C29WB-22CC8-VJ326-GHFJW-H9DH4"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2008 R2 Web",
+    "product_key": "6TPJF-RBVHG-WBW2R-86QPH-6RTM4"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2008 R2 HPC edition",
+    "product_key": "TT8MH-CG224-D3D7Q-498W2-9QCTX"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2008 R2 Standard",
+    "product_key": "YC6KT-GKW9T-YTKYR-T4X34-R7VHC"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2008 R2 Enterprise",
+    "product_key": "489J6-VHDMP-X63PK-3K798-CPX3Y"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2008 R2 Datacenter",
+    "product_key": "74YFP-3QFB3-KQT8W-PMXWJ-7M648"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2008 R2 for Itanium-based Systems",
+    "product_key": "GT63C-RJFQ3-4GMB6-BRFB9-CB83V"
+  },
+  {
+    "os_caption": "Microsoft Windows Vista Business",
+    "product_key": "YFKBB-PQJJV-G996G-VWGXY-2V3X8"
+  },
+  {
+    "os_caption": "Microsoft Windows Vista Business N",
+    "product_key": "HMBQG-8H2RH-C77VX-27R82-VMQBT"
+  },
+  {
+    "os_caption": "Microsoft Windows Vista Enterprise",
+    "product_key": "VKK3X-68KWM-X2YGT-QR4M6-4BWMV"
+  },
+  {
+    "os_caption": "Microsoft Windows Vista Enterprise N",
+    "product_key": "VTC42-BM838-43QHV-84HX6-XJXKV"
+  },
+  {
+    "os_caption": "Microsoft Windows Web Server 2008",
+    "product_key": "WYR28-R7TFJ-3X2YQ-YCY4H-M249D"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2008 Standard",
+    "product_key": "TM24T-X9RMF-VWXK6-X8JC9-BFGM2"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2008 Standard without Hyper-V",
+    "product_key": "W7VD6-7JFBR-RX26B-YKQ3Y-6FFFJ"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2008 Enterprise",
+    "product_key": "YQGMW-MPWTJ-34KDK-48M3W-X4Q6V"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2008 Enterprise without Hyper-V",
+    "product_key": "39BXF-X8Q23-P2WWT-38T2F-G3FPG"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2008 HPC",
+    "product_key": "RCTX3-KWVHP-BR6TB-RB6DM-6X7HP"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2008 Datacenter",
+    "product_key": "7M67G-PC374-GR742-YH8V4-TCBY3"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2008 Datacenter without Hyper-V",
+    "product_key": "22XQ2-VRXRG-P8D42-K34TD-G3QQC"
+  },
+  {
+    "os_caption": "Microsoft Windows Server 2008 for Itanium-Based Systems",
+    "product_key": "4DWFP-JF3DJ-B7DTH-78FJB-PDRHK"
+  }
+]

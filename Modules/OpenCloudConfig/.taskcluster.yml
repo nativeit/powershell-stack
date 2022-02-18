@@ -1,0 +1,1443 @@
+version: 0
+metadata:
+  name: 'OpenCloudConfig'
+  description: 'OpenCloudConfig CI Tasks'
+  owner: '{{event.head.user.email}}'
+  source: '{{event.head.repo.url}}'
+tasks:
+- provisionerId: releng-3
+  workerType: linux
+  routes:
+  - 'index.project.releng.opencloudconfig.v1.revision.{{event.head.sha}}.validation'
+  extra:
+    github:
+      env: true
+      events:
+        - pull_request.*
+        - push
+    data:
+      base:
+        sha: '{{event.base.sha}}'
+        user:
+          login: '{{event.base.user.login}}'
+      head:
+        sha: '{{event.head.sha}}'
+        user:
+          email: '{{event.head.user.email}}'
+  payload:
+    maxRunTime: 600
+    image: 'grenade/opencloudconfig'
+    command:
+    - '/bin/bash'
+    - '--login'
+    - '-c'
+    - 'git clone --quiet {{event.head.repo.url}} && git --git-dir=./OpenCloudConfig/.git --work-tree=./OpenCloudConfig fetch && git --git-dir=./OpenCloudConfig/.git --work-tree=./OpenCloudConfig checkout {{event.head.repo.branch}} && ./OpenCloudConfig/ci/validate.sh'
+  metadata:
+    name: 'Validate submission'
+    description: 'run a linter against json (and todo: powershell) files'
+    owner: '{{event.head.user.email}}'
+    source: '{{event.head.repo.url}}'
+
+- provisionerId: releng-3
+  workerType: linux
+  scopes:
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updatetooltoolrepo
+  routes:
+  - 'index.project.releng.opencloudconfig.v1.revision.{{event.head.sha}}.updatetooltoolrepo'
+  extra:
+    github:
+      env: true
+      events:
+        - push
+      branches:
+      - master
+      - beta
+    data:
+      head:
+        sha: '{{event.head.sha}}'
+        user:
+          email: '{{event.head.user.email}}'
+  payload:
+    maxRunTime: 10800
+    image: 'grenade/opencloudconfig'
+    features:
+      taskclusterProxy: true
+    command:
+    - '/bin/bash'
+    - '--login'
+    - '-c'
+    - 'git clone --quiet {{event.head.repo.url}} && git --git-dir=./OpenCloudConfig/.git --work-tree=./OpenCloudConfig fetch && git --git-dir=./OpenCloudConfig/.git --work-tree=./OpenCloudConfig checkout {{ event.head.repo.branch }} && ./OpenCloudConfig/ci/update-tooltool-repo.sh'
+    artifacts:
+      'public/tooltool/manifest':
+        type: directory
+        path: './tooltool'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/tooltool/sha512.patch':
+        type: file
+        path: './sha512.patch'
+        expires: "{{ '1 year' | $fromNow }}"
+  metadata:
+    name: 'Update tooltool repository'
+    description: 'mirror installer executables referenced in json manifests to tooltool'
+    owner: '{{event.head.user.email}}'
+    source: '{{event.head.repo.url}}'
+
+- provisionerId: releng-3
+  workerType: linux
+  scopes:
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updatetooltoolrepo
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updateworkertype
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:cot-gecko-1-b-win2012-beta
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-1-b-win2012-beta
+  - secrets:set:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-1-b-win2012-beta
+    #- aws-provisioner:manage-worker-type:gecko-1-b-win2012-beta
+  routes:
+  - 'index.project.releng.opencloudconfig.v1.revision.{{event.head.sha}}.gecko-1-b-win2012-beta'
+  - 'index.project.releng.opencloudconfig.v1.revision.latest.gecko-1-b-win2012-beta'
+  extra:
+    github:
+      env: true
+      events:
+        - push
+      branches:
+      - master
+      - beta
+    data:
+      head:
+        sha: '{{event.head.sha}}'
+        user:
+          email: '{{event.head.user.email}}'
+  payload:
+    maxRunTime: 10800
+    image: 'grenade/opencloudconfig'
+    features:
+      taskclusterProxy: true
+    command:
+    - '/bin/bash'
+    - '--login'
+    - '-c'
+    - 'git clone --quiet {{event.head.repo.url}} && git --git-dir=./OpenCloudConfig/.git --work-tree=./OpenCloudConfig fetch && git --git-dir=./OpenCloudConfig/.git --work-tree=./OpenCloudConfig checkout {{ event.head.repo.branch }} && ./OpenCloudConfig/ci/update-workertype.sh gecko-1-b-win2012-beta'
+    artifacts:
+      'project/releng/opencloudconfig/secret-update-response.json':
+        type: file
+        path: './secret-update-response.json'
+        expires: "{{ '4 weeks' | $fromNow }}"
+      'public/ami-latest.json':
+        type: file
+        path: './ami-latest.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-latest.yml':
+        type: file
+        path: './ami-latest.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.json':
+        type: file
+        path: './ami-list.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.yml':
+        type: file
+        path: './ami-list.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/instance-logs':
+        type: directory
+        path: './instance-logs'
+        expires: "{{ '1 year' | $fromNow }}"
+  metadata:
+    name: 'Update gecko-1-b-win2012-beta AMIs'
+    description: 'recreate Firefox Windows try experimental build AMIs using OpenCloudConfig for configuration and dependency installation'
+    owner: '{{event.head.user.email}}'
+    source: '{{event.head.repo.url}}'
+
+- provisionerId: releng-3
+  workerType: linux
+  scopes:
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updatetooltoolrepo
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updateworkertype
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:cot-gecko-1-b-win2012-xlarge
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-1-b-win2012-xlarge
+  - secrets:set:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-1-b-win2012-xlarge
+    #- aws-provisioner:manage-worker-type:gecko-1-b-win2012-xlarge
+  routes:
+  - 'index.project.releng.opencloudconfig.v1.revision.{{event.head.sha}}.gecko-1-b-win2012-xlarge'
+  - 'index.project.releng.opencloudconfig.v1.revision.latest.gecko-1-b-win2012-xlarge'
+  extra:
+    github:
+      env: true
+      events:
+        - push
+      branches:
+      - master
+      - beta
+    data:
+      head:
+        sha: '{{event.head.sha}}'
+        user:
+          email: '{{event.head.user.email}}'
+  payload:
+    maxRunTime: 10800
+    image: 'grenade/opencloudconfig'
+    features:
+      taskclusterProxy: true
+    command:
+    - '/bin/bash'
+    - '--login'
+    - '-c'
+    - 'git clone --quiet {{event.head.repo.url}} && git --git-dir=./OpenCloudConfig/.git --work-tree=./OpenCloudConfig fetch && git --git-dir=./OpenCloudConfig/.git --work-tree=./OpenCloudConfig checkout {{ event.head.repo.branch }} && ./OpenCloudConfig/ci/update-workertype.sh gecko-1-b-win2012-xlarge'
+    artifacts:
+      'project/releng/opencloudconfig/secret-update-response.json':
+        type: file
+        path: './secret-update-response.json'
+        expires: "{{ '4 weeks' | $fromNow }}"
+      'public/ami-latest.json':
+        type: file
+        path: './ami-latest.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-latest.yml':
+        type: file
+        path: './ami-latest.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.json':
+        type: file
+        path: './ami-list.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.yml':
+        type: file
+        path: './ami-list.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/instance-logs':
+        type: directory
+        path: './instance-logs'
+        expires: "{{ '1 year' | $fromNow }}"
+  metadata:
+    name: 'Update gecko-1-b-win2012-xlarge AMIs'
+    description: 'recreate Firefox Windows try xlarge build AMIs using OpenCloudConfig for configuration and dependency installation'
+    owner: '{{event.head.user.email}}'
+    source: '{{event.head.repo.url}}'
+
+- provisionerId: releng-3
+  workerType: linux
+  scopes:
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updatetooltoolrepo
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updateworkertype
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:cot-gecko-1-b-win2012
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-1-b-win2012
+  - secrets:set:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-1-b-win2012
+    #- aws-provisioner:manage-worker-type:gecko-1-b-win2012
+  routes:
+  - 'index.project.releng.opencloudconfig.v1.revision.{{event.head.sha}}.gecko-1-b-win2012'
+  - 'index.project.releng.opencloudconfig.v1.revision.latest.gecko-1-b-win2012'
+  extra:
+    github:
+      env: true
+      events:
+        - push
+      branches:
+      - master
+    data:
+      head:
+        sha: '{{event.head.sha}}'
+        user:
+          email: '{{event.head.user.email}}'
+  payload:
+    maxRunTime: 10800
+    image: 'grenade/opencloudconfig'
+    features:
+      taskclusterProxy: true
+    command:
+    - '/bin/bash'
+    - '--login'
+    - '-c'
+    - 'git clone --quiet {{event.head.repo.url}} && ./OpenCloudConfig/ci/update-workertype.sh gecko-1-b-win2012'
+    artifacts:
+      'project/releng/opencloudconfig/secret-update-response.json':
+        type: file
+        path: './secret-update-response.json'
+        expires: "{{ '4 weeks' | $fromNow }}"
+      'public/ami-latest.json':
+        type: file
+        path: './ami-latest.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-latest.yml':
+        type: file
+        path: './ami-latest.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.json':
+        type: file
+        path: './ami-list.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.yml':
+        type: file
+        path: './ami-list.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/instance-logs':
+        type: directory
+        path: './instance-logs'
+        expires: "{{ '1 year' | $fromNow }}"
+  metadata:
+    name: 'Update gecko-1-b-win2012 AMIs'
+    description: 'recreate Firefox Windows try build AMIs using OpenCloudConfig for configuration and dependency installation'
+    owner: '{{event.head.user.email}}'
+    source: '{{event.head.repo.url}}'
+
+- provisionerId: releng-3
+  workerType: linux
+  scopes:
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updatetooltoolrepo
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updateworkertype
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:cot-gecko-2-b-win2012
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-2-b-win2012
+  - secrets:set:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-2-b-win2012
+    #- aws-provisioner:manage-worker-type:gecko-2-b-win2012
+  routes:
+  - 'index.project.releng.opencloudconfig.v1.revision.{{event.head.sha}}.gecko-2-b-win2012'
+  - 'index.project.releng.opencloudconfig.v1.revision.latest.gecko-2-b-win2012'
+  extra:
+    github:
+      env: true
+      events:
+        - push
+      branches:
+      - master
+    data:
+      head:
+        sha: '{{event.head.sha}}'
+        user:
+          email: '{{event.head.user.email}}'
+  payload:
+    maxRunTime: 10800
+    image: 'grenade/opencloudconfig'
+    features:
+      taskclusterProxy: true
+    command:
+    - '/bin/bash'
+    - '--login'
+    - '-c'
+    - 'git clone --quiet {{event.head.repo.url}} && ./OpenCloudConfig/ci/update-workertype.sh gecko-2-b-win2012'
+    artifacts:
+      'project/releng/opencloudconfig/secret-update-response.json':
+        type: file
+        path: './secret-update-response.json'
+        expires: "{{ '4 weeks' | $fromNow }}"
+      'public/ami-latest.json':
+        type: file
+        path: './ami-latest.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-latest.yml':
+        type: file
+        path: './ami-latest.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.json':
+        type: file
+        path: './ami-list.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.yml':
+        type: file
+        path: './ami-list.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/instance-logs':
+        type: directory
+        path: './instance-logs'
+        expires: "{{ '1 year' | $fromNow }}"
+  metadata:
+    name: 'Update gecko-2-b-win2012 AMIs'
+    description: 'recreate Firefox Windows l2 build AMIs using OpenCloudConfig for configuration and dependency installation'
+    owner: '{{event.head.user.email}}'
+    source: '{{event.head.repo.url}}'
+
+- provisionerId: releng-3
+  workerType: linux
+  scopes:
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updatetooltoolrepo
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updateworkertype
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:cot-gecko-3-b-win2012
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-3-b-win2012
+  - secrets:set:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-3-b-win2012
+    #- aws-provisioner:manage-worker-type:gecko-3-b-win2012
+  routes:
+  - 'index.project.releng.opencloudconfig.v1.revision.{{event.head.sha}}.gecko-3-b-win2012'
+  - 'index.project.releng.opencloudconfig.v1.revision.latest.gecko-3-b-win2012'
+  extra:
+    github:
+      env: true
+      events:
+        - push
+      branches:
+      - master
+    data:
+      head:
+        sha: '{{event.head.sha}}'
+        user:
+          email: '{{event.head.user.email}}'
+  payload:
+    maxRunTime: 10800
+    image: 'grenade/opencloudconfig'
+    features:
+      taskclusterProxy: true
+    command:
+    - '/bin/bash'
+    - '--login'
+    - '-c'
+    - 'git clone --quiet {{event.head.repo.url}} && ./OpenCloudConfig/ci/update-workertype.sh gecko-3-b-win2012'
+    artifacts:
+      'project/releng/opencloudconfig/secret-update-response.json':
+        type: file
+        path: './secret-update-response.json'
+        expires: "{{ '4 weeks' | $fromNow }}"
+      'public/ami-latest.json':
+        type: file
+        path: './ami-latest.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-latest.yml':
+        type: file
+        path: './ami-latest.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.json':
+        type: file
+        path: './ami-list.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.yml':
+        type: file
+        path: './ami-list.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/instance-logs':
+        type: directory
+        path: './instance-logs'
+        expires: "{{ '1 year' | $fromNow }}"
+  metadata:
+    name: 'Update gecko-3-b-win2012 AMIs'
+    description: 'recreate Firefox Windows prod build AMIs using OpenCloudConfig for configuration and dependency installation'
+    owner: '{{event.head.user.email}}'
+    source: '{{event.head.repo.url}}'
+
+- provisionerId: releng-3
+  workerType: linux
+  scopes:
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updatetooltoolrepo
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updateworkertype
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:cot-gecko-3-b-win2012-c4
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-3-b-win2012-c4
+  - secrets:set:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-3-b-win2012-c4
+    #- aws-provisioner:manage-worker-type:gecko-3-b-win2012-c4
+  routes:
+  - 'index.project.releng.opencloudconfig.v1.revision.{{event.head.sha}}.gecko-3-b-win2012-c4'
+  - 'index.project.releng.opencloudconfig.v1.revision.latest.gecko-3-b-win2012-c4'
+  extra:
+    github:
+      env: true
+      events:
+        - push
+      branches:
+      - master
+    data:
+      head:
+        sha: '{{event.head.sha}}'
+        user:
+          email: '{{event.head.user.email}}'
+  payload:
+    maxRunTime: 10800
+    image: 'grenade/opencloudconfig'
+    features:
+      taskclusterProxy: true
+    command:
+    - '/bin/bash'
+    - '--login'
+    - '-c'
+    - 'git clone --quiet {{event.head.repo.url}} && ./OpenCloudConfig/ci/update-workertype.sh gecko-3-b-win2012-c4'
+    artifacts:
+      'project/releng/opencloudconfig/secret-update-response.json':
+        type: file
+        path: './secret-update-response.json'
+        expires: "{{ '4 weeks' | $fromNow }}"
+      'public/ami-latest.json':
+        type: file
+        path: './ami-latest.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-latest.yml':
+        type: file
+        path: './ami-latest.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.json':
+        type: file
+        path: './ami-list.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.yml':
+        type: file
+        path: './ami-list.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/instance-logs':
+        type: directory
+        path: './instance-logs'
+        expires: "{{ '1 year' | $fromNow }}"
+  metadata:
+    name: 'Update gecko-3-b-win2012-c4 AMIs'
+    description: 'recreate Firefox Windows prod build AMIs using OpenCloudConfig for configuration and dependency installation'
+    owner: '{{event.head.user.email}}'
+    source: '{{event.head.repo.url}}'
+
+- provisionerId: releng-3
+  workerType: linux
+  scopes:
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updatetooltoolrepo
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updateworkertype
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:cot-gecko-3-b-win2012-c5
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-3-b-win2012-c5
+  - secrets:set:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-3-b-win2012-c5
+    #- aws-provisioner:manage-worker-type:gecko-3-b-win2012-c5
+  routes:
+  - 'index.project.releng.opencloudconfig.v1.revision.{{event.head.sha}}.gecko-3-b-win2012-c5'
+  - 'index.project.releng.opencloudconfig.v1.revision.latest.gecko-3-b-win2012-c5'
+  extra:
+    github:
+      env: true
+      events:
+        - push
+      branches:
+      - master
+    data:
+      head:
+        sha: '{{event.head.sha}}'
+        user:
+          email: '{{event.head.user.email}}'
+  payload:
+    maxRunTime: 10800
+    image: 'grenade/opencloudconfig'
+    features:
+      taskclusterProxy: true
+    command:
+    - '/bin/bash'
+    - '--login'
+    - '-c'
+    - 'git clone --quiet {{event.head.repo.url}} && ./OpenCloudConfig/ci/update-workertype.sh gecko-3-b-win2012-c5'
+    artifacts:
+      'project/releng/opencloudconfig/secret-update-response.json':
+        type: file
+        path: './secret-update-response.json'
+        expires: "{{ '4 weeks' | $fromNow }}"
+      'public/ami-latest.json':
+        type: file
+        path: './ami-latest.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-latest.yml':
+        type: file
+        path: './ami-latest.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.json':
+        type: file
+        path: './ami-list.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.yml':
+        type: file
+        path: './ami-list.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/instance-logs':
+        type: directory
+        path: './instance-logs'
+        expires: "{{ '1 year' | $fromNow }}"
+  metadata:
+    name: 'Update gecko-3-b-win2012-c5 AMIs'
+    description: 'recreate Firefox Windows prod build AMIs using OpenCloudConfig for configuration and dependency installation'
+    owner: '{{event.head.user.email}}'
+    source: '{{event.head.repo.url}}'
+
+- provisionerId: releng-3
+  workerType: linux
+  scopes:
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updatetooltoolrepo
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updateworkertype
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win7-32-cu
+  - secrets:set:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win7-32-cu
+    #- aws-provisioner:manage-worker-type:gecko-t-win7-32-cu
+  routes:
+  - 'index.project.releng.opencloudconfig.v1.revision.{{event.head.sha}}.gecko-t-win7-32-cu'
+  - 'index.project.releng.opencloudconfig.v1.revision.latest.gecko-t-win7-32-cu'
+  extra:
+    github:
+      env: true
+      events:
+        - push
+      branches:
+      - master
+    data:
+      head:
+        sha: '{{event.head.sha}}'
+        user:
+          email: '{{event.head.user.email}}'
+  payload:
+    maxRunTime: 10800
+    image: 'grenade/opencloudconfig'
+    features:
+      taskclusterProxy: true
+    command:
+    - '/bin/bash'
+    - '--login'
+    - '-c'
+    - 'git clone --quiet {{event.head.repo.url}} && ./OpenCloudConfig/ci/update-workertype.sh gecko-t-win7-32-cu'
+    artifacts:
+      'project/releng/opencloudconfig/secret-update-response.json':
+        type: file
+        path: './secret-update-response.json'
+        expires: "{{ '4 weeks' | $fromNow }}"
+      'public/ami-latest.json':
+        type: file
+        path: './ami-latest.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-latest.yml':
+        type: file
+        path: './ami-latest.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.json':
+        type: file
+        path: './ami-list.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.yml':
+        type: file
+        path: './ami-list.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/instance-logs':
+        type: directory
+        path: './instance-logs'
+        expires: "{{ '1 year' | $fromNow }}"
+  metadata:
+    name: 'Update gecko-t-win7-32-cu AMIs'
+    description: 'Windows 7 (32 bit) for generic-worker CI'
+    owner: '{{event.head.user.email}}'
+    source: '{{event.head.repo.url}}'
+
+- provisionerId: releng-3
+  workerType: linux
+  scopes:
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updatetooltoolrepo
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updateworkertype
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win7-32-gpu-b
+  - secrets:set:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win7-32-gpu-b
+    #- aws-provisioner:manage-worker-type:gecko-t-win7-32-gpu-b
+  routes:
+  - 'index.project.releng.opencloudconfig.v1.revision.{{event.head.sha}}.gecko-t-win7-32-gpu-b'
+  - 'index.project.releng.opencloudconfig.v1.revision.latest.gecko-t-win7-32-gpu-b'
+  extra:
+    github:
+      env: true
+      events:
+        - push
+      branches:
+      - master
+      - beta
+    data:
+      head:
+        sha: '{{event.head.sha}}'
+        user:
+          email: '{{event.head.user.email}}'
+  payload:
+    maxRunTime: 10800
+    image: 'grenade/opencloudconfig'
+    features:
+      taskclusterProxy: true
+    command:
+    - '/bin/bash'
+    - '--login'
+    - '-c'
+    - 'git clone --quiet {{event.head.repo.url}} && git --git-dir=./OpenCloudConfig/.git --work-tree=./OpenCloudConfig fetch && git --git-dir=./OpenCloudConfig/.git --work-tree=./OpenCloudConfig checkout {{ event.head.repo.branch }} && ./OpenCloudConfig/ci/update-workertype.sh gecko-t-win7-32-gpu-b'
+    artifacts:
+      'project/releng/opencloudconfig/secret-update-response.json':
+        type: file
+        path: './secret-update-response.json'
+        expires: "{{ '4 weeks' | $fromNow }}"
+      'public/ami-latest.json':
+        type: file
+        path: './ami-latest.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-latest.yml':
+        type: file
+        path: './ami-latest.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.json':
+        type: file
+        path: './ami-list.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.yml':
+        type: file
+        path: './ami-list.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/instance-logs':
+        type: directory
+        path: './instance-logs'
+        expires: "{{ '1 year' | $fromNow }}"
+  metadata:
+    name: 'Update gecko-t-win7-32-gpu-b AMIs'
+    description: 'recreate Experimental Firefox Windows 7 GPU (32 bit) test AMIs using OpenCloudConfig for configuration and dependency installation'
+    owner: '{{event.head.user.email}}'
+    source: '{{event.head.repo.url}}'
+
+- provisionerId: releng-3
+  workerType: linux
+  scopes:
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updatetooltoolrepo
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updateworkertype
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win7-32-beta
+  - secrets:set:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win7-32-beta
+    #- aws-provisioner:manage-worker-type:gecko-t-win7-32-beta
+  routes:
+  - 'index.project.releng.opencloudconfig.v1.revision.{{event.head.sha}}.gecko-t-win7-32-beta'
+  - 'index.project.releng.opencloudconfig.v1.revision.latest.gecko-t-win7-32-beta'
+  extra:
+    github:
+      env: true
+      events:
+        - push
+      branches:
+      - master
+      - beta
+    data:
+      head:
+        sha: '{{event.head.sha}}'
+        user:
+          email: '{{event.head.user.email}}'
+  payload:
+    maxRunTime: 10800
+    image: 'grenade/opencloudconfig'
+    features:
+      taskclusterProxy: true
+    command:
+    - '/bin/bash'
+    - '--login'
+    - '-c'
+    - 'git clone --quiet {{event.head.repo.url}} && git --git-dir=./OpenCloudConfig/.git --work-tree=./OpenCloudConfig fetch && git --git-dir=./OpenCloudConfig/.git --work-tree=./OpenCloudConfig checkout {{ event.head.repo.branch }} && ./OpenCloudConfig/ci/update-workertype.sh gecko-t-win7-32-beta'
+    artifacts:
+      'project/releng/opencloudconfig/secret-update-response.json':
+        type: file
+        path: './secret-update-response.json'
+        expires: "{{ '4 weeks' | $fromNow }}"
+      'public/ami-latest.json':
+        type: file
+        path: './ami-latest.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-latest.yml':
+        type: file
+        path: './ami-latest.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.json':
+        type: file
+        path: './ami-list.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.yml':
+        type: file
+        path: './ami-list.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/instance-logs':
+        type: directory
+        path: './instance-logs'
+        expires: "{{ '1 year' | $fromNow }}"
+  metadata:
+    name: 'Update gecko-t-win7-32-beta AMIs'
+    description: 'recreate Experimental Firefox Windows 7 (32 bit) test AMIs using OpenCloudConfig for configuration and dependency installation'
+    owner: '{{event.head.user.email}}'
+    source: '{{event.head.repo.url}}'
+
+- provisionerId: releng-3
+  workerType: linux
+  scopes:
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updatetooltoolrepo
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updateworkertype
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win7-32
+  - secrets:set:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win7-32
+    #- aws-provisioner:manage-worker-type:gecko-t-win7-32
+  routes:
+  - 'index.project.releng.opencloudconfig.v1.revision.{{event.head.sha}}.gecko-t-win7-32'
+  - 'index.project.releng.opencloudconfig.v1.revision.latest.gecko-t-win7-32'
+  extra:
+    github:
+      env: true
+      events:
+        - push
+      branches:
+      - master
+    data:
+      head:
+        sha: '{{event.head.sha}}'
+        user:
+          email: '{{event.head.user.email}}'
+  payload:
+    maxRunTime: 10800
+    image: 'grenade/opencloudconfig'
+    features:
+      taskclusterProxy: true
+    command:
+    - '/bin/bash'
+    - '--login'
+    - '-c'
+    - 'git clone --quiet {{event.head.repo.url}} && ./OpenCloudConfig/ci/update-workertype.sh gecko-t-win7-32'
+    artifacts:
+      'project/releng/opencloudconfig/secret-update-response.json':
+        type: file
+        path: './secret-update-response.json'
+        expires: "{{ '4 weeks' | $fromNow }}"
+      'public/ami-latest.json':
+        type: file
+        path: './ami-latest.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-latest.yml':
+        type: file
+        path: './ami-latest.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.json':
+        type: file
+        path: './ami-list.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.yml':
+        type: file
+        path: './ami-list.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/instance-logs':
+        type: directory
+        path: './instance-logs'
+        expires: "{{ '1 year' | $fromNow }}"
+  metadata:
+    name: 'Update gecko-t-win7-32 AMIs'
+    description: 'recreate Firefox Windows 7 (32 bit) test AMIs using OpenCloudConfig for configuration and dependency installation'
+    owner: '{{event.head.user.email}}'
+    source: '{{event.head.repo.url}}'
+
+- provisionerId: releng-3
+  workerType: linux
+  scopes:
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updatetooltoolrepo
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updateworkertype
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win7-32-gpu
+  - secrets:set:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win7-32-gpu
+    #- aws-provisioner:manage-worker-type:gecko-t-win7-32-gpu
+  routes:
+  - 'index.project.releng.opencloudconfig.v1.revision.{{event.head.sha}}.gecko-t-win7-32-gpu'
+  - 'index.project.releng.opencloudconfig.v1.revision.latest.gecko-t-win7-32-gpu'
+  extra:
+    github:
+      env: true
+      events:
+        - push
+      branches:
+      - master
+    data:
+      head:
+        sha: '{{event.head.sha}}'
+        user:
+          email: '{{event.head.user.email}}'
+  payload:
+    maxRunTime: 10800
+    image: 'grenade/opencloudconfig'
+    features:
+      taskclusterProxy: true
+    command:
+    - '/bin/bash'
+    - '--login'
+    - '-c'
+    - 'git clone --quiet {{event.head.repo.url}} && ./OpenCloudConfig/ci/update-workertype.sh gecko-t-win7-32-gpu'
+    artifacts:
+      'project/releng/opencloudconfig/secret-update-response.json':
+        type: file
+        path: './secret-update-response.json'
+        expires: "{{ '4 weeks' | $fromNow }}"
+      'public/ami-latest.json':
+        type: file
+        path: './ami-latest.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-latest.yml':
+        type: file
+        path: './ami-latest.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.json':
+        type: file
+        path: './ami-list.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.yml':
+        type: file
+        path: './ami-list.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/instance-logs':
+        type: directory
+        path: './instance-logs'
+        expires: "{{ '1 year' | $fromNow }}"
+  metadata:
+    name: 'Update gecko-t-win7-32-gpu AMIs'
+    description: 'recreate Firefox Windows 7 (32 bit) test AMIs using OpenCloudConfig for configuration and dependency installation'
+    owner: '{{event.head.user.email}}'
+    source: '{{event.head.repo.url}}'
+
+- provisionerId: releng-3
+  workerType: linux
+  scopes:
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updatetooltoolrepo
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updateworkertype
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win10-64-cu
+  - secrets:set:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win10-64-cu
+    #- aws-provisioner:manage-worker-type:gecko-t-win10-64-cu
+  routes:
+  - 'index.project.releng.opencloudconfig.v1.revision.{{event.head.sha}}.gecko-t-win10-64-cu'
+  - 'index.project.releng.opencloudconfig.v1.revision.latest.gecko-t-win10-64-cu'
+  extra:
+    github:
+      env: true
+      events:
+        - push
+      branches:
+      - master
+    data:
+      head:
+        sha: '{{event.head.sha}}'
+        user:
+          email: '{{event.head.user.email}}'
+  payload:
+    maxRunTime: 10800
+    image: 'grenade/opencloudconfig'
+    features:
+      taskclusterProxy: true
+    command:
+    - '/bin/bash'
+    - '--login'
+    - '-c'
+    - 'git clone --quiet {{event.head.repo.url}} && ./OpenCloudConfig/ci/update-workertype.sh gecko-t-win10-64-cu'
+    artifacts:
+      'project/releng/opencloudconfig/secret-update-response.json':
+        type: file
+        path: './secret-update-response.json'
+        expires: "{{ '4 weeks' | $fromNow }}"
+      'public/ami-latest.json':
+        type: file
+        path: './ami-latest.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-latest.yml':
+        type: file
+        path: './ami-latest.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.json':
+        type: file
+        path: './ami-list.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.yml':
+        type: file
+        path: './ami-list.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/instance-logs':
+        type: directory
+        path: './instance-logs'
+        expires: "{{ '1 year' | $fromNow }}"
+  metadata:
+    name: 'Update gecko-t-win10-64-cu AMIs'
+    description: 'recreate Experimental Firefox Windows 10 (64 bit) test AMIs using OpenCloudConfig for configuration and dependency installation'
+    owner: '{{event.head.user.email}}'
+    source: '{{event.head.repo.url}}'
+
+- provisionerId: releng-3
+  workerType: linux
+  scopes:
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updatetooltoolrepo
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updateworkertype
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win10-64-alpha
+  - secrets:set:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win10-64-alpha
+    #- aws-provisioner:manage-worker-type:gecko-t-win10-64-alpha
+  routes:
+  - 'index.project.releng.opencloudconfig.v1.revision.{{event.head.sha}}.gecko-t-win10-64-alpha'
+  - 'index.project.releng.opencloudconfig.v1.revision.latest.gecko-t-win10-64-alpha'
+  extra:
+    github:
+      env: true
+      events:
+        - push
+      branches:
+      - master
+      - alpha
+    data:
+      head:
+        sha: '{{event.head.sha}}'
+        user:
+          email: '{{event.head.user.email}}'
+  payload:
+    maxRunTime: 10800
+    image: 'grenade/opencloudconfig'
+    features:
+      taskclusterProxy: true
+    command:
+    - '/bin/bash'
+    - '--login'
+    - '-c'
+    - 'git clone --quiet {{event.head.repo.url}} && git --git-dir=./OpenCloudConfig/.git --work-tree=./OpenCloudConfig fetch && git --git-dir=./OpenCloudConfig/.git --work-tree=./OpenCloudConfig checkout {{ event.head.repo.branch }} && ./OpenCloudConfig/ci/update-workertype.sh gecko-t-win10-64-alpha'
+    artifacts:
+      'project/releng/opencloudconfig/secret-update-response.json':
+        type: file
+        path: './secret-update-response.json'
+        expires: "{{ '4 weeks' | $fromNow }}"
+      'public/ami-latest.json':
+        type: file
+        path: './ami-latest.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-latest.yml':
+        type: file
+        path: './ami-latest.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.json':
+        type: file
+        path: './ami-list.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.yml':
+        type: file
+        path: './ami-list.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/instance-logs':
+        type: directory
+        path: './instance-logs'
+        expires: "{{ '1 year' | $fromNow }}"
+  metadata:
+    name: 'Update gecko-t-win10-64-alpha AMIs'
+    description: 'recreate Experimental Firefox Windows 10 (64 bit) test AMIs using OpenCloudConfig for configuration and dependency installation'
+    owner: '{{event.head.user.email}}'
+    source: '{{event.head.repo.url}}'
+
+- provisionerId: releng-3
+  workerType: linux
+  scopes:
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updatetooltoolrepo
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updateworkertype
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win10-64-beta
+  - secrets:set:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win10-64-beta
+    #- aws-provisioner:manage-worker-type:gecko-t-win10-64-beta
+  routes:
+  - 'index.project.releng.opencloudconfig.v1.revision.{{event.head.sha}}.gecko-t-win10-64-beta'
+  - 'index.project.releng.opencloudconfig.v1.revision.latest.gecko-t-win10-64-beta'
+  extra:
+    github:
+      env: true
+      events:
+        - push
+      branches:
+      - master
+      - beta
+    data:
+      head:
+        sha: '{{event.head.sha}}'
+        user:
+          email: '{{event.head.user.email}}'
+  payload:
+    maxRunTime: 10800
+    image: 'grenade/opencloudconfig'
+    features:
+      taskclusterProxy: true
+    command:
+    - '/bin/bash'
+    - '--login'
+    - '-c'
+    - 'git clone --quiet {{event.head.repo.url}} && git --git-dir=./OpenCloudConfig/.git --work-tree=./OpenCloudConfig fetch && git --git-dir=./OpenCloudConfig/.git --work-tree=./OpenCloudConfig checkout {{ event.head.repo.branch }} && ./OpenCloudConfig/ci/update-workertype.sh gecko-t-win10-64-beta'
+    artifacts:
+      'project/releng/opencloudconfig/secret-update-response.json':
+        type: file
+        path: './secret-update-response.json'
+        expires: "{{ '4 weeks' | $fromNow }}"
+      'public/ami-latest.json':
+        type: file
+        path: './ami-latest.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-latest.yml':
+        type: file
+        path: './ami-latest.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.json':
+        type: file
+        path: './ami-list.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.yml':
+        type: file
+        path: './ami-list.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/instance-logs':
+        type: directory
+        path: './instance-logs'
+        expires: "{{ '1 year' | $fromNow }}"
+  metadata:
+    name: 'Update gecko-t-win10-64-beta AMIs'
+    description: 'recreate Experimental Firefox Windows 10 (64 bit) test AMIs using OpenCloudConfig for configuration and dependency installation'
+    owner: '{{event.head.user.email}}'
+    source: '{{event.head.repo.url}}'
+
+- provisionerId: releng-3
+  workerType: linux
+  scopes:
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updatetooltoolrepo
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updateworkertype
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win10-64
+  - secrets:set:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win10-64
+    #- aws-provisioner:manage-worker-type:gecko-t-win10-64
+  routes:
+  - 'index.project.releng.opencloudconfig.v1.revision.{{event.head.sha}}.gecko-t-win10-64'
+  - 'index.project.releng.opencloudconfig.v1.revision.latest.gecko-t-win10-64'
+  extra:
+    github:
+      env: true
+      events:
+        - push
+      branches:
+      - master
+    data:
+      head:
+        sha: '{{event.head.sha}}'
+        user:
+          email: '{{event.head.user.email}}'
+  payload:
+    maxRunTime: 10800
+    image: 'grenade/opencloudconfig'
+    features:
+      taskclusterProxy: true
+    command:
+    - '/bin/bash'
+    - '--login'
+    - '-c'
+    - 'git clone --quiet {{event.head.repo.url}} && ./OpenCloudConfig/ci/update-workertype.sh gecko-t-win10-64'
+    artifacts:
+      'project/releng/opencloudconfig/secret-update-response.json':
+        type: file
+        path: './secret-update-response.json'
+        expires: "{{ '4 weeks' | $fromNow }}"
+      'public/ami-latest.json':
+        type: file
+        path: './ami-latest.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-latest.yml':
+        type: file
+        path: './ami-latest.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.json':
+        type: file
+        path: './ami-list.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.yml':
+        type: file
+        path: './ami-list.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/instance-logs':
+        type: directory
+        path: './instance-logs'
+        expires: "{{ '1 year' | $fromNow }}"
+  metadata:
+    name: 'Update gecko-t-win10-64 AMIs'
+    description: 'recreate Firefox Windows 10 (64 bit) test AMIs using OpenCloudConfig for configuration and dependency installation'
+    owner: '{{event.head.user.email}}'
+    source: '{{event.head.repo.url}}'
+
+- provisionerId: releng-3
+  workerType: linux
+  scopes:
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updatetooltoolrepo
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updateworkertype
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win10-64-gpu-a
+  - secrets:set:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win10-64-gpu-a
+    #- aws-provisioner:manage-worker-type:gecko-t-win10-64-gpu-a
+  routes:
+  - 'index.project.releng.opencloudconfig.v1.revision.{{event.head.sha}}.gecko-t-win10-64-gpu-a'
+  - 'index.project.releng.opencloudconfig.v1.revision.latest.gecko-t-win10-64-gpu-a'
+  extra:
+    github:
+      env: true
+      events:
+        - push
+      branches:
+      - master
+      - alpha
+    data:
+      head:
+        sha: '{{event.head.sha}}'
+        user:
+          email: '{{event.head.user.email}}'
+  payload:
+    maxRunTime: 10800
+    image: 'grenade/opencloudconfig'
+    features:
+      taskclusterProxy: true
+    command:
+    - '/bin/bash'
+    - '--login'
+    - '-c'
+    - 'git clone --quiet {{event.head.repo.url}} && git --git-dir=./OpenCloudConfig/.git --work-tree=./OpenCloudConfig fetch && git --git-dir=./OpenCloudConfig/.git --work-tree=./OpenCloudConfig checkout {{ event.head.repo.branch }} && ./OpenCloudConfig/ci/update-workertype.sh gecko-t-win10-64-gpu-a'
+    artifacts:
+      'project/releng/opencloudconfig/secret-update-response.json':
+        type: file
+        path: './secret-update-response.json'
+        expires: "{{ '4 weeks' | $fromNow }}"
+      'public/ami-latest.json':
+        type: file
+        path: './ami-latest.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-latest.yml':
+        type: file
+        path: './ami-latest.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.json':
+        type: file
+        path: './ami-list.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.yml':
+        type: file
+        path: './ami-list.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/instance-logs':
+        type: directory
+        path: './instance-logs'
+        expires: "{{ '1 year' | $fromNow }}"
+  metadata:
+    name: 'Update gecko-t-win10-64-gpu-a AMIs'
+    description: 'recreate Experimental Firefox Windows 10 (64 bit) GPU test AMIs using OpenCloudConfig for configuration and dependency installation'
+    owner: '{{event.head.user.email}}'
+    source: '{{event.head.repo.url}}'
+
+- provisionerId: releng-3
+  workerType: linux
+  scopes:
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updatetooltoolrepo
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updateworkertype
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win10-64-gpu-b
+  - secrets:set:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win10-64-gpu-b
+    #- aws-provisioner:manage-worker-type:gecko-t-win10-64-gpu-b
+  routes:
+  - 'index.project.releng.opencloudconfig.v1.revision.{{event.head.sha}}.gecko-t-win10-64-gpu-b'
+  - 'index.project.releng.opencloudconfig.v1.revision.latest.gecko-t-win10-64-gpu-b'
+  extra:
+    github:
+      env: true
+      events:
+        - push
+      branches:
+      - master
+      - beta
+    data:
+      head:
+        sha: '{{event.head.sha}}'
+        user:
+          email: '{{event.head.user.email}}'
+  payload:
+    maxRunTime: 10800
+    image: 'grenade/opencloudconfig'
+    features:
+      taskclusterProxy: true
+    command:
+    - '/bin/bash'
+    - '--login'
+    - '-c'
+    - 'git clone --quiet {{event.head.repo.url}} && git --git-dir=./OpenCloudConfig/.git --work-tree=./OpenCloudConfig fetch && git --git-dir=./OpenCloudConfig/.git --work-tree=./OpenCloudConfig checkout {{ event.head.repo.branch }} && ./OpenCloudConfig/ci/update-workertype.sh gecko-t-win10-64-gpu-b'
+    artifacts:
+      'project/releng/opencloudconfig/secret-update-response.json':
+        type: file
+        path: './secret-update-response.json'
+        expires: "{{ '4 weeks' | $fromNow }}"
+      'public/ami-latest.json':
+        type: file
+        path: './ami-latest.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-latest.yml':
+        type: file
+        path: './ami-latest.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.json':
+        type: file
+        path: './ami-list.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.yml':
+        type: file
+        path: './ami-list.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/instance-logs':
+        type: directory
+        path: './instance-logs'
+        expires: "{{ '1 year' | $fromNow }}"
+  metadata:
+    name: 'Update gecko-t-win10-64-gpu-b AMIs'
+    description: 'recreate Experimental Firefox Windows 10 (64 bit) GPU test AMIs using OpenCloudConfig for configuration and dependency installation'
+    owner: '{{event.head.user.email}}'
+    source: '{{event.head.repo.url}}'
+
+- provisionerId: releng-3
+  workerType: linux
+  scopes:
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updatetooltoolrepo
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updateworkertype
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win10-64-gpu-s
+  - secrets:set:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win10-64-gpu-s
+    #- aws-provisioner:manage-worker-type:gecko-t-win10-64-gpu-s
+  routes:
+  - 'index.project.releng.opencloudconfig.v1.revision.{{event.head.sha}}.gecko-t-win10-64-gpu-s'
+  - 'index.project.releng.opencloudconfig.v1.revision.latest.gecko-t-win10-64-gpu-s'
+  extra:
+    github:
+      env: true
+      events:
+        - push
+      branches:
+      - master
+      - beta
+    data:
+      head:
+        sha: '{{event.head.sha}}'
+        user:
+          email: '{{event.head.user.email}}'
+  payload:
+    maxRunTime: 10800
+    image: 'grenade/opencloudconfig'
+    features:
+      taskclusterProxy: true
+    command:
+    - '/bin/bash'
+    - '--login'
+    - '-c'
+    - 'git clone --quiet {{event.head.repo.url}} && git --git-dir=./OpenCloudConfig/.git --work-tree=./OpenCloudConfig fetch && git --git-dir=./OpenCloudConfig/.git --work-tree=./OpenCloudConfig checkout {{ event.head.repo.branch }} && ./OpenCloudConfig/ci/update-workertype.sh gecko-t-win10-64-gpu-s'
+    artifacts:
+      'project/releng/opencloudconfig/secret-update-response.json':
+        type: file
+        path: './secret-update-response.json'
+        expires: "{{ '4 weeks' | $fromNow }}"
+      'public/ami-latest.json':
+        type: file
+        path: './ami-latest.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-latest.yml':
+        type: file
+        path: './ami-latest.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.json':
+        type: file
+        path: './ami-list.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.yml':
+        type: file
+        path: './ami-list.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/instance-logs':
+        type: directory
+        path: './instance-logs'
+        expires: "{{ '1 year' | $fromNow }}"
+  metadata:
+    name: 'Update gecko-t-win10-64-gpu-s AMIs'
+    description: 'recreate Experimental Firefox Windows 10 (64 bit) GPU test AMIs using OpenCloudConfig for configuration and dependency installation'
+    owner: '{{event.head.user.email}}'
+    source: '{{event.head.repo.url}}'
+
+- provisionerId: releng-3
+  workerType: linux
+  scopes:
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updatetooltoolrepo
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updateworkertype
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win10-64-gpu
+  - secrets:set:repo:github.com/mozilla-releng/OpenCloudConfig:gecko-t-win10-64-gpu
+    #- aws-provisioner:manage-worker-type:gecko-t-win10-64-gpu
+  routes:
+  - 'index.project.releng.opencloudconfig.v1.revision.{{event.head.sha}}.gecko-t-win10-64-gpu'
+  - 'index.project.releng.opencloudconfig.v1.revision.latest.gecko-t-win10-64-gpu'
+  extra:
+    github:
+      env: true
+      events:
+        - push
+      branches:
+      - master
+    data:
+      head:
+        sha: '{{event.head.sha}}'
+        user:
+          email: '{{event.head.user.email}}'
+  payload:
+    maxRunTime: 10800
+    image: 'grenade/opencloudconfig'
+    features:
+      taskclusterProxy: true
+    command:
+    - '/bin/bash'
+    - '--login'
+    - '-c'
+    - 'git clone --quiet {{event.head.repo.url}} && ./OpenCloudConfig/ci/update-workertype.sh gecko-t-win10-64-gpu'
+    artifacts:
+      'project/releng/opencloudconfig/secret-update-response.json':
+        type: file
+        path: './secret-update-response.json'
+        expires: "{{ '4 weeks' | $fromNow }}"
+      'public/ami-latest.json':
+        type: file
+        path: './ami-latest.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-latest.yml':
+        type: file
+        path: './ami-latest.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.json':
+        type: file
+        path: './ami-list.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.yml':
+        type: file
+        path: './ami-list.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/instance-logs':
+        type: directory
+        path: './instance-logs'
+        expires: "{{ '1 year' | $fromNow }}"
+  metadata:
+    name: 'Update gecko-t-win10-64-gpu AMIs'
+    description: 'recreate Firefox Windows 10 (64 bit) GPU test AMIs using OpenCloudConfig for configuration and dependency installation'
+    owner: '{{event.head.user.email}}'
+    source: '{{event.head.repo.url}}'
+
+- provisionerId: releng-3
+  workerType: linux
+  scopes:
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updatetooltoolrepo
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:updateworkertype
+  - secrets:get:repo:github.com/mozilla-releng/OpenCloudConfig:relops-image-builder
+  - secrets:set:repo:github.com/mozilla-releng/OpenCloudConfig:relops-image-builder
+    #- aws-provisioner:manage-worker-type:relops-image-builder
+  routes:
+  - 'index.project.releng.opencloudconfig.v1.revision.{{event.head.sha}}.relops-image-builder'
+  - 'index.project.releng.opencloudconfig.v1.revision.latest.relops-image-builder'
+  extra:
+    github:
+      env: true
+      events:
+        - push
+      branches:
+      - master
+    data:
+      head:
+        sha: '{{event.head.sha}}'
+        user:
+          email: '{{event.head.user.email}}'
+  payload:
+    maxRunTime: 10800
+    image: 'grenade/opencloudconfig'
+    features:
+      taskclusterProxy: true
+    command:
+    - '/bin/bash'
+    - '--login'
+    - '-c'
+    - 'git clone --quiet {{event.head.repo.url}} && ./OpenCloudConfig/ci/update-workertype.sh relops-image-builder'
+    artifacts:
+      'project/releng/opencloudconfig/secret-update-response.json':
+        type: file
+        path: './secret-update-response.json'
+        expires: "{{ '4 weeks' | $fromNow }}"
+      'public/ami-latest.json':
+        type: file
+        path: './ami-latest.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-latest.yml':
+        type: file
+        path: './ami-latest.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.json':
+        type: file
+        path: './ami-list.json'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/ami-list.yml':
+        type: file
+        path: './ami-list.yml'
+        expires: "{{ '1 year' | $fromNow }}"
+      'public/instance-logs':
+        type: directory
+        path: './instance-logs'
+        expires: "{{ '1 year' | $fromNow }}"
+  metadata:
+    name: 'Update relops-image-builder AMIs'
+    description: 'recreate relops image builder AMIs using OpenCloudConfig for configuration and dependency installation'
+    owner: '{{event.head.user.email}}'
+    source: '{{event.head.repo.url}}'

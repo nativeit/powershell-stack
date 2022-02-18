@@ -1,0 +1,207 @@
+# global help @url https://docs.gitlab.com/ce/ci/yaml/README.htm
+
+variables:
+
+# @see https://docs.gitlab.com/ce/ci/yaml/README.html#stages
+stages:
+  - env
+  - test
+  - build
+  - docs
+  - deploy
+
+
+######## ##    ## ##     ##
+##       ###   ## ##     ##
+##       ####  ## ##     ##
+######   ## ## ## ##     ##
+##       ##  ####  ##   ##
+##       ##   ###   ## ##
+######## ##    ##    ###
+
+
+.env:
+  stage: env
+  script:
+    # # - Set-ExecutionPolicy RemoteSigned -Force
+    # - $PSVersionTable | Format-Table Name, Value
+    # - Get-Location
+    # - dir Env:\ | Format-Table Name, Value
+    # - $project = Get-Content ./project.conf -Raw | ConvertFrom-StringData
+    # - $project | Format-Table Name, Value
+    - pwsh -c ./scripts/01_env.ps1
+
+windows_env_job:
+  extends: .env
+  tags:
+    - windows
+    - pwsh
+
+linux_env_job:
+  extends: .env
+  tags:
+    - linux
+    - pwsh
+
+macos_env_job:
+  extends: .env
+  tags:
+    - macos
+    - pwsh
+
+######## ########  ######  ########
+   ##    ##       ##    ##    ##
+   ##    ##       ##          ##
+   ##    ######    ######     ##
+   ##    ##             ##    ##
+   ##    ##       ##    ##    ##
+   ##    ########  ######     ##
+
+
+.test_job:
+  stage: test
+  rules:
+    # 1. Adopt tagging convention by enforcing semantic versioning (https://semver.org/)
+    - if: '$CI_COMMIT_TAG =~ /^v\d+.\d+.\d+$/'
+    - if: '$CI_COMMIT_BRANCH =~ /^release/'
+    - if: '$CI_COMMIT_BRANCH =~ /^hotfix/'
+    - if: '$CI_COMMIT_BRANCH =~ /^bugfix/'
+  tags:
+    - windows
+    - pwsh
+  script:
+    - pwsh -c ./scripts/02_test.ps1
+
+windows_test_job:
+  extends: .test_job
+  tags:
+    - windows
+    - pwsh
+  needs: [ "windows_env_job" ]
+
+linux_test_job:
+  extends: .test_job
+  tags:
+    - linux
+    - pwsh
+  needs: [ "linux_env_job" ]
+
+macos_test_job:
+  extends: .test_job
+  tags:
+    - macos
+    - pwsh
+  needs: [ "macos_env_job" ]
+
+########  ##     ## #### ##       ########
+##     ## ##     ##  ##  ##       ##     ##
+##     ## ##     ##  ##  ##       ##     ##
+########  ##     ##  ##  ##       ##     ##
+##     ## ##     ##  ##  ##       ##     ##
+##     ## ##     ##  ##  ##       ##     ##
+########   #######  #### ######## ########
+
+windows_pwsh_build_job:
+  stage: build
+  rules:
+    # 1. Adopt tagging convention by enforcing semantic versioning (https://semver.org/)
+    - if: '$CI_COMMIT_TAG =~ /^v\d+.\d+.\d+$/'
+    - if: '$CI_COMMIT_BRANCH =~ /^release/'
+    - if: '$CI_COMMIT_BRANCH =~ /^hotfix/'
+    - if: '$CI_COMMIT_BRANCH =~ /^bugfix/'
+  tags:
+    - windows
+    - pwsh
+  script:
+    - pwsh -c ./scripts/03_build.ps1
+  artifacts:
+    paths:
+    - ./$env:CI_PROJECT_TITLE
+    expire_in: 1 day
+  needs: [ "windows_test_job" ]
+
+windows_powershell_build_job:
+  stage: build
+  rules:
+    # 1. Adopt tagging convention by enforcing semantic versioning (https://semver.org/)
+    - if: '$CI_COMMIT_TAG =~ /^v\d+.\d+.\d+$/'
+    - if: '$CI_COMMIT_BRANCH =~ /^release/'
+    - if: '$CI_COMMIT_BRANCH =~ /^hotfix/'
+    - if: '$CI_COMMIT_BRANCH =~ /^bugfix/'
+  tags:
+    - windows
+    - powershell
+  script:
+    - powershell.exe -c ./scripts/03_build.ps1
+  artifacts:
+    paths:
+    - ./$env:CI_PROJECT_TITLE
+    expire_in: 1 day
+  needs: [ "windows_test_job" ]
+
+#
+# ########   #######   ######   ######
+# ##     ## ##     ## ##    ## ##    ##
+# ##     ## ##     ## ##       ##
+# ##     ## ##     ## ##        ######
+# ##     ## ##     ## ##             ##
+# ##     ## ##     ## ##    ## ##    ##
+# ########   #######   ######   ######
+#
+
+# docs_job:
+#   stage: docs
+#   tags:
+#     - windows
+#     - pwsh
+#   script:
+#     - pwsh -c ./scripts/99_make_help.ps1
+
+#
+# ########  ######## ########  ##        #######  ##    ##
+# ##     ## ##       ##     ## ##       ##     ##  ##  ##
+# ##     ## ##       ##     ## ##       ##     ##   ####
+# ##     ## ######   ########  ##       ##     ##    ##
+# ##     ## ##       ##        ##       ##     ##    ##
+# ##     ## ##       ##        ##       ##     ##    ##
+# ########  ######## ##        ########  #######     ##
+#
+
+
+deploy_job:
+  stage: deploy
+  rules:
+    # 1. Adopt tagging convention by enforcing semantic versioning (https://semver.org/)
+    - if: '$CI_COMMIT_TAG =~ /^v\d+.\d+.\d+$/'
+    - if: '$CI_COMMIT_BRANCH =~ /^release/'
+    - if: '$CI_COMMIT_BRANCH =~ /^hotfix/'
+    - if: '$CI_COMMIT_BRANCH =~ /^bugfix/'
+  tags:
+    - windows
+    - pwsh
+    - nuget
+  script:
+    - pwsh -c ./scripts/04_deploy.ps1
+  needs: [ "windows_pwsh_build_job" ]
+
+# develop_deploy_job:
+#   stage: deploy
+#   tags:
+#     - windows
+#     - pwsh
+#     - nuget
+#   script:
+#     - pwsh -c ./scripts/04_deploy_develop.ps1
+#   only:
+#     - /^release/.*$/
+
+# master_deploy_job:
+#   stage: deploy
+#   tags:
+#     - windows
+#     - pwsh
+#     - nuget
+#   script:
+#     - pwsh -c ./scripts/04_deploy_master.ps1
+#   only:
+#     - master

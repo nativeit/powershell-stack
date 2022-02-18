@@ -1,0 +1,3 @@
+cfg/generic-worker/*.json
+cfg/*.key
+cfg/bitbar/.*.pw

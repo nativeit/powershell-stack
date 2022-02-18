@@ -1,0 +1,6 @@
+.DS_Store
+
+**/.vscode/
+/package/
+/load.ps1
+/launch.ps1

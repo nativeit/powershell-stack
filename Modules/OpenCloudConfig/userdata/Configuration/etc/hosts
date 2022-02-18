@@ -1,0 +1,8 @@
+# papertrail identifier
+127.0.0.1 hostname.workertype.ec2region.mozilla.com
+
+# loopback
+127.0.0.1 localhost
+
+# generic-worker taskcluster-proxy integration
+127.0.0.1 taskcluster

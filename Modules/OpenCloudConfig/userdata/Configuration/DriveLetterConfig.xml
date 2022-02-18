@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="yes"?>
+<DriveLetterMapping>
+  <Mapping>
+    <VolumeName>cache</VolumeName>
+    <DriveLetter>Y:</DriveLetter>
+  </Mapping>
+  <Mapping>
+    <VolumeName>task</VolumeName>
+    <DriveLetter>Z:</DriveLetter>
+  </Mapping>
+</DriveLetterMapping>

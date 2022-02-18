@@ -1,0 +1,6 @@
+images/PowerShell_5.0_icon.png
+*.bak
+api.keys
+releases/*
+PwSh.Fw.Core/PwSh.Fw.Core.nuspec
+*.psd1

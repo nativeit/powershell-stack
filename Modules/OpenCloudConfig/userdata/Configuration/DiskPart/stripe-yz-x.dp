@@ -1,0 +1,11 @@
+select disk 1
+clean
+convert dynamic
+
+select disk 2
+clean
+convert dynamic
+
+create volume stripe disk=1,2
+format quick fs=ntfs
+assign letter=X

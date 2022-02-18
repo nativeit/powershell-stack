@@ -1,0 +1,169 @@
+# NOTE:
+# We stop signing GraphicalTools now since we aren't doing anymore work on it until MAUI
+
+name: PR-$(System.PullRequest.PullRequestNumber)-$(Date:yyyyMMdd)$(Rev:.rr)
+
+variables:
+  # Don't download unneeded packages
+  - name: DOTNET_SKIP_FIRST_TIME_EXPERIENCE
+    value: 'true'
+  # Improve performance by not sending telemetry
+  - name: DOTNET_CLI_TELEMETRY_OPTOUT
+    value: 'true'
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - master
+  paths:
+    exclude:
+      - /.dependabot/*
+      - /.poshchan/*
+      - /.github/**/*
+      - /.vscode/**/*
+      - /.vsts-ci/misc-analysis.yml
+      - /tools/**/*
+      - .editorconfig
+      - .gitattributes
+      - .gitignore
+      - /docs/**/*
+      - /CHANGELOG.md
+      - /CONTRIBUTING.md
+      - /README.md
+      - /LICENSE.txt
+      - /CODE_OF_CONDUCT.md
+
+resources:
+  repositories:
+  - repository: ComplianceRepo
+    type: github
+    endpoint: ComplianceGHRepo
+    name: PowerShell/compliance
+
+stages:
+- stage: Build
+  displayName: Build
+  jobs:
+  - job: 'ReleaseBuild'
+    displayName: Release Build
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - template: templates/ci-general.yml
+    - pwsh: |
+        Get-ChildItem -Recurse '$(Build.SourcesDirectory)'
+      displayName: Capture downloaded artifacts
+    - publish: '$(Build.SourcesDirectory)\src\Microsoft.PowerShell.ConsoleGuiTools\obj\project.assets.json'
+      artifact: ConsoleGuiToolsAssetsJson
+      displayName: Publish ConsoleGuiTools project.assets.json
+
+  - job: 'SignBuild'
+    displayName: Signing Build
+    dependsOn: 'ReleaseBuild'
+    pool:
+      name: 'Package ES Standard Build'
+      demands: DotNetFramework
+    variables:
+    - group: ESRP
+    steps:
+    - powershell: |
+        Get-ChildItem -Path env:
+      displayName: Capture environment
+      condition: succeededOrFailed()
+
+    - task: DownloadBuildArtifacts@0
+      displayName: 'Download Build Artifacts'
+      inputs:
+        downloadType: specific
+
+    - pwsh: |
+        Expand-Archive -Path "$env:BUILD_ARTIFACTSTAGINGDIRECTORY\GraphicalTools\Microsoft.PowerShell.ConsoleGuiTools-Windows_NT.zip" -DestinationPath "$env:BUILD_ARTIFACTSTAGINGDIRECTORY\Microsoft.PowerShell.ConsoleGuiTools"
+      displayName: 'Extract build zip'
+
+    - template: EsrpSign.yml@ComplianceRepo
+      parameters:
+        # the folder which contains the binaries to sign
+        buildOutputPath: $(Build.ArtifactStagingDirectory)\Microsoft.PowerShell.ConsoleGuiTools
+        # the location to put the signed output
+        signOutputPath: $(Build.ArtifactStagingDirectory)\Microsoft.PowerShell.ConsoleGuiTools-Signed
+        # the certificate ID to use
+        certificateId: "CP-230012"
+        # The file pattern to use
+        # If not using minimatch: comma separated, with * supported
+        # If using minimatch: newline separated, with !, **, and * supported.
+        # See link in the useMinimatch comments.
+        pattern: 'Microsoft.PowerShell.*.dll,Microsoft.PowerShell.*.psd1,Microsoft.PowerShell.*.psm1'
+        # decides if the task should use minimatch for the pattern matching.
+        # https://github.com/isaacs/minimatch#features
+        useMinimatch: false
+
+    - pwsh: |
+        $signed="$env:BUILD_ARTIFACTSTAGINGDIRECTORY\Microsoft.PowerShell.ConsoleGuiTools-Signed\*"
+        $notSigned="$env:BUILD_ARTIFACTSTAGINGDIRECTORY\Microsoft.PowerShell.ConsoleGuiTools"
+        Copy-Item $signed $notSigned -Recurse -Force -Verbose
+      displayName: 'Copy signed files to unsigned folder'
+
+    - template: EsrpSign.yml@ComplianceRepo
+      parameters:
+        # the folder which contains the binaries to sign
+        buildOutputPath: $(Build.ArtifactStagingDirectory)\Microsoft.PowerShell.ConsoleGuiTools
+        # the location to put the signed output
+        signOutputPath: $(Build.ArtifactStagingDirectory)\Microsoft.PowerShell.ConsoleGuiTools-Signed
+        # the certificate ID to use
+        certificateId: "CP-231522"
+        # The file pattern to use
+        # If not using minimatch: comma separated, with * supported
+        # If using minimatch: newline separated, with !, **, and * supported.
+        # See link in the useMinimatch comments.
+        pattern: 'NStack.dll,Terminal.Gui.dll'
+        # decides if the task should use minimatch for the pattern matching.
+        # https://github.com/isaacs/minimatch#features
+        useMinimatch: false
+
+    - pwsh: |
+        $signed="$(Build.ArtifactStagingDirectory)\Microsoft.PowerShell.ConsoleGuiTools-Signed\*"
+        $notSigned="$(Build.ArtifactStagingDirectory)\Microsoft.PowerShell.ConsoleGuiTools"
+        Copy-Item $signed $notSigned -Recurse -Force -Verbose
+      displayName: 'Copy signed files to unsigned folder'
+
+    - publish: $(Build.ArtifactStagingDirectory)\Microsoft.PowerShell.ConsoleGuiTools
+      artifact: Microsoft.PowerShell.ConsoleGuiTools-Signed
+      displayName: 'Upload Artifacts'
+      condition: succeededOrFailed()
+
+- stage: compliance
+  displayName: Compliance
+  dependsOn: Build
+  jobs:
+  - job: Compliance_Job
+    pool:
+      name: Package ES Standard Build
+    steps:
+    - checkout: self
+    - checkout: ComplianceRepo
+    - download: current
+      artifact: Microsoft.PowerShell.ConsoleGuiTools-Signed
+    - download: current
+      artifact: ConsoleGuiToolsAssetsJson
+
+    - pwsh: |
+        Get-ChildItem -Recurse '$(Pipeline.Workspace)'
+      displayName: Capture downloaded artifacts
+
+    - template: assembly-module-compliance.yml@ComplianceRepo
+      parameters:
+        # binskim
+        AnalyzeTarget: '$(Pipeline.Workspace)\Microsoft.PowerShell.ConsoleGuiTools-Signed\*.dll'
+        AnalyzeSymPath: 'SRV*'
+        # component-governance
+        sourceScanPath: '$(Pipeline.Workspace)\ConsoleGuiToolsAssetsJson'
+        # credscan
+        suppressionsFile: ''
+        # TermCheck
+        optionsRulesDBPath: ''
+        optionsFTPath: ''
+        # tsa-upload
+        codeBaseName: 'PSGraphicalTools_20201123'
+        # selections
+        APIScan: false # set to false when not using Windows APIs.

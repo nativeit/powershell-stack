@@ -1,0 +1,10 @@
+[
+  {
+    "hostname": "t-w1064-ux-016",
+    "workertype": "gecko-t-win10-64-ux-b"
+  },
+  {
+    "hostname": "t-w1064-ms-600",
+    "workertype": "gecko-t-win10-64-hw-b"
+  }
+]

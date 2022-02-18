@@ -1,0 +1,1424 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "manifest",
+  "description": "instance manifest",
+  "type": "object",
+  "properties": {
+    "Components": {
+      "description": "instance dependencies and components",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/definitions/DirectoryCreate"
+          },
+          {
+            "$ref": "#/definitions/DirectoryDelete"
+          },
+          {
+            "$ref": "#/definitions/DirectoryCopy"
+          },
+          {
+            "$ref": "#/definitions/CommandRun"
+          },
+          {
+            "$ref": "#/definitions/FileDownload"
+          },
+          {
+            "$ref": "#/definitions/ChecksumFileDownload"
+          },
+          {
+            "$ref": "#/definitions/SymbolicLink"
+          },
+          {
+            "$ref": "#/definitions/ExeInstall"
+          },
+          {
+            "$ref": "#/definitions/MsiInstall"
+          },
+          {
+            "$ref": "#/definitions/WindowsFeatureInstall"
+          },
+          {
+            "$ref": "#/definitions/ZipInstall"
+          },
+          {
+            "$ref": "#/definitions/ServiceControl"
+          },
+          {
+            "$ref": "#/definitions/EnvironmentVariableSet"
+          },
+          {
+            "$ref": "#/definitions/EnvironmentVariableUniqueAppend"
+          },
+          {
+            "$ref": "#/definitions/EnvironmentVariableUniquePrepend"
+          },
+          {
+            "$ref": "#/definitions/RegistryKeySet"
+          },
+          {
+            "$ref": "#/definitions/RegistryValueSet"
+          },
+          {
+            "$ref": "#/definitions/FirewallRule"
+          }
+        ]
+      },
+      "uniqueItems": true
+    }
+  },
+  "definitions": {
+    "DirectoryCreate": {
+      "properties": {
+        "ComponentName": {
+          "type": "string"
+        },
+        "ComponentType": {
+          "enum": [
+            "DirectoryCreate"
+          ]
+        },
+        "Path": {
+          "type": "string"
+        },
+        "Comment": {
+          "type": "string"
+        },
+        "DependsOn": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ComponentName": {
+                "type": "string"
+              },
+              "ComponentType": {
+                "enum": [
+                  "DirectoryCreate",
+                  "DirectoryDelete",
+                  "DirectoryCopy",
+                  "CommandRun",
+                  "FileDownload",
+                  "ChecksumFileDownload",
+                  "SymbolicLink",
+                  "ExeInstall",
+                  "MsiInstall",
+                  "WindowsFeatureInstall",
+                  "ZipInstall",
+                  "ServiceControl",
+                  "EnvironmentVariableSet",
+                  "EnvironmentVariableUniqueAppend",
+                  "EnvironmentVariableUniquePrepend",
+                  "RegistryKeySet",
+                  "RegistryValueSet",
+                  "FirewallRule"
+                ]
+              },
+              "required": [
+                "ComponentName",
+                "ComponentType"
+              ]
+            }
+          }
+        },
+        "required": [
+          "ComponentName",
+          "ComponentType",
+          "Path"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "DirectoryDelete": {
+      "properties": {
+        "ComponentName": {
+          "type": "string"
+        },
+        "ComponentType": {
+          "enum": [
+            "DirectoryDelete"
+          ]
+        },
+        "Path": {
+          "type": "string"
+        },
+        "Comment": {
+          "type": "string"
+        },
+        "DependsOn": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ComponentName": {
+                "type": "string"
+              },
+              "ComponentType": {
+                "enum": [
+                  "DirectoryCreate",
+                  "DirectoryDelete",
+                  "DirectoryCopy",
+                  "CommandRun",
+                  "FileDownload",
+                  "ChecksumFileDownload",
+                  "SymbolicLink",
+                  "ExeInstall",
+                  "MsiInstall",
+                  "WindowsFeatureInstall",
+                  "ZipInstall",
+                  "ServiceControl",
+                  "EnvironmentVariableSet",
+                  "EnvironmentVariableUniqueAppend",
+                  "EnvironmentVariableUniquePrepend",
+                  "RegistryKeySet",
+                  "RegistryValueSet",
+                  "FirewallRule"
+                ]
+              },
+              "required": [
+                "ComponentName",
+                "ComponentType"
+              ]
+            }
+          }
+        },
+        "required": [
+          "ComponentName",
+          "ComponentType",
+          "Path"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "DirectoryCopy": {
+      "properties": {
+        "ComponentName": {
+          "type": "string"
+        },
+        "ComponentType": {
+          "enum": [
+            "DirectoryCopy"
+          ]
+        },
+        "Source": {
+          "type": "string"
+        },
+        "Target": {
+          "type": "string"
+        },
+        "Comment": {
+          "type": "string"
+        },
+        "DependsOn": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ComponentName": {
+                "type": "string"
+              },
+              "ComponentType": {
+                "enum": [
+                  "DirectoryCreate",
+                  "DirectoryDelete",
+                  "DirectoryCopy",
+                  "CommandRun",
+                  "FileDownload",
+                  "ChecksumFileDownload",
+                  "SymbolicLink",
+                  "ExeInstall",
+                  "MsiInstall",
+                  "WindowsFeatureInstall",
+                  "ZipInstall",
+                  "ServiceControl",
+                  "EnvironmentVariableSet",
+                  "EnvironmentVariableUniqueAppend",
+                  "EnvironmentVariableUniquePrepend",
+                  "RegistryKeySet",
+                  "RegistryValueSet",
+                  "FirewallRule"
+                ]
+              },
+              "required": [
+                "ComponentName",
+                "ComponentType"
+              ]
+            }
+          }
+        },
+        "required": [
+          "ComponentName",
+          "ComponentType",
+          "Source",
+          "Target"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "CommandRun": {
+      "properties": {
+        "ComponentName": {
+          "type": "string"
+        },
+        "ComponentType": {
+          "enum": [
+            "CommandRun"
+          ]
+        },
+        "Command": {
+          "type": "string"
+        },
+        "Arguments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Comment": {
+          "type": "string"
+        },
+        "DependsOn": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ComponentName": {
+                "type": "string"
+              },
+              "ComponentType": {
+                "enum": [
+                  "DirectoryCreate",
+                  "DirectoryDelete",
+                  "DirectoryCopy",
+                  "CommandRun",
+                  "FileDownload",
+                  "ChecksumFileDownload",
+                  "SymbolicLink",
+                  "ExeInstall",
+                  "MsiInstall",
+                  "WindowsFeatureInstall",
+                  "ZipInstall",
+                  "ServiceControl",
+                  "EnvironmentVariableSet",
+                  "EnvironmentVariableUniqueAppend",
+                  "EnvironmentVariableUniquePrepend",
+                  "RegistryKeySet",
+                  "RegistryValueSet",
+                  "FirewallRule"
+                ]
+              },
+              "required": [
+                "ComponentName",
+                "ComponentType"
+              ]
+            }
+          }
+        },
+        "Validate": {
+          "type": "object",
+          "properties": {
+            "PathsExist": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "PathsNotExist": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "CommandsReturn": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "Command": {
+                    "type": "string"
+                  },
+                  "Arguments": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Match": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "FilesContain": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "Path": {
+                    "type": "string"
+                  },
+                  "Match": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "required": [
+          "ComponentName",
+          "ComponentType",
+          "Command"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "FileDownload": {
+      "properties": {
+        "ComponentName": {
+          "type": "string"
+        },
+        "ComponentType": {
+          "enum": [
+            "FileDownload"
+          ]
+        },
+        "Source": {
+          "type": "string",
+          "pattern": "/(http|https|ftp):\\/\\/[\\w-]+(\\.[\\w-]+)+([\\w.,@?^=%&amp;:\\/~+#-]*[\\w@?^=%&amp;\\/~+#-])?/"
+        },
+        "Target": {
+          "type": "string"
+        },
+        "Comment": {
+          "type": "string"
+        },
+        "DependsOn": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ComponentName": {
+                "type": "string"
+              },
+              "ComponentType": {
+                "enum": [
+                  "DirectoryCreate",
+                  "DirectoryDelete",
+                  "DirectoryCopy",
+                  "CommandRun",
+                  "FileDownload",
+                  "ChecksumFileDownload",
+                  "SymbolicLink",
+                  "ExeInstall",
+                  "MsiInstall",
+                  "WindowsFeatureInstall",
+                  "ZipInstall",
+                  "ServiceControl",
+                  "EnvironmentVariableSet",
+                  "EnvironmentVariableUniqueAppend",
+                  "EnvironmentVariableUniquePrepend",
+                  "RegistryKeySet",
+                  "RegistryValueSet",
+                  "FirewallRule"
+                ]
+              },
+              "required": [
+                "ComponentName",
+                "ComponentType"
+              ]
+            }
+          }
+        },
+        "required": [
+          "ComponentName",
+          "ComponentType",
+          "Source",
+          "Target"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "ChecksumFileDownload": {
+      "properties": {
+        "ComponentName": {
+          "type": "string"
+        },
+        "ComponentType": {
+          "enum": [
+            "ChecksumFileDownload"
+          ]
+        },
+        "Source": {
+          "type": "string",
+          "pattern": "/(http|https|ftp):\\/\\/[\\w-]+(\\.[\\w-]+)+([\\w.,@?^=%&amp;:\\/~+#-]*[\\w@?^=%&amp;\\/~+#-])?/"
+        },
+        "Target": {
+          "type": "string"
+        },
+        "Comment": {
+          "type": "string"
+        },
+        "DependsOn": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ComponentName": {
+                "type": "string"
+              },
+              "ComponentType": {
+                "enum": [
+                  "DirectoryCreate",
+                  "DirectoryDelete",
+                  "DirectoryCopy",
+                  "CommandRun",
+                  "FileDownload",
+                  "ChecksumFileDownload",
+                  "SymbolicLink",
+                  "ExeInstall",
+                  "MsiInstall",
+                  "WindowsFeatureInstall",
+                  "ZipInstall",
+                  "ServiceControl",
+                  "EnvironmentVariableSet",
+                  "EnvironmentVariableUniqueAppend",
+                  "EnvironmentVariableUniquePrepend",
+                  "RegistryKeySet",
+                  "RegistryValueSet",
+                  "FirewallRule"
+                ]
+              },
+              "required": [
+                "ComponentName",
+                "ComponentType"
+              ]
+            }
+          }
+        },
+        "required": [
+          "ComponentName",
+          "ComponentType",
+          "Source",
+          "Target"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "SymbolicLink": {
+      "properties": {
+        "ComponentName": {
+          "type": "string"
+        },
+        "ComponentType": {
+          "enum": [
+            "SymbolicLink"
+          ]
+        },
+        "Link": {
+          "type": "string"
+        },
+        "Target": {
+          "type": "string"
+        },
+        "Comment": {
+          "type": "string"
+        },
+        "DependsOn": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ComponentName": {
+                "type": "string"
+              },
+              "ComponentType": {
+                "enum": [
+                  "DirectoryCreate",
+                  "DirectoryDelete",
+                  "DirectoryCopy",
+                  "CommandRun",
+                  "FileDownload",
+                  "ChecksumFileDownload",
+                  "SymbolicLink",
+                  "ExeInstall",
+                  "MsiInstall",
+                  "WindowsFeatureInstall",
+                  "ZipInstall",
+                  "ServiceControl",
+                  "EnvironmentVariableSet",
+                  "EnvironmentVariableUniqueAppend",
+                  "EnvironmentVariableUniquePrepend",
+                  "RegistryKeySet",
+                  "RegistryValueSet",
+                  "FirewallRule"
+                ]
+              },
+              "required": [
+                "ComponentName",
+                "ComponentType"
+              ]
+            }
+          }
+        },
+        "required": [
+          "ComponentName",
+          "ComponentType",
+          "Link",
+          "Target"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "ExeInstall": {
+      "properties": {
+        "ComponentName": {
+          "type": "string"
+        },
+        "ComponentType": {
+          "enum": [
+            "ExeInstall"
+          ]
+        },
+        "Url": {
+          "type": "string",
+          "pattern": "/(http|https|ftp):\\/\\/[\\w-]+(\\.[\\w-]+)+([\\w.,@?^=%&amp;:\\/~+#-]*[\\w@?^=%&amp;\\/~+#-])?/"
+        },
+        "Arguments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Comment": {
+          "type": "string"
+        },
+        "DependsOn": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ComponentName": {
+                "type": "string"
+              },
+              "ComponentType": {
+                "enum": [
+                  "DirectoryCreate",
+                  "DirectoryDelete",
+                  "DirectoryCopy",
+                  "CommandRun",
+                  "FileDownload",
+                  "ChecksumFileDownload",
+                  "SymbolicLink",
+                  "ExeInstall",
+                  "MsiInstall",
+                  "WindowsFeatureInstall",
+                  "ZipInstall",
+                  "ServiceControl",
+                  "EnvironmentVariableSet",
+                  "EnvironmentVariableUniqueAppend",
+                  "EnvironmentVariableUniquePrepend",
+                  "RegistryKeySet",
+                  "RegistryValueSet",
+                  "FirewallRule"
+                ]
+              },
+              "required": [
+                "ComponentName",
+                "ComponentType"
+              ]
+            }
+          }
+        },
+        "Validate": {
+          "type": "object",
+          "properties": {
+            "PathsExist": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "PathsNotExist": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "CommandsReturn": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "Command": {
+                    "type": "string"
+                  },
+                  "Arguments": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Match": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "FilesContain": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "Path": {
+                    "type": "string"
+                  },
+                  "Match": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "required": [
+          "ComponentName",
+          "ComponentType",
+          "Url"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "MsiInstall": {
+      "properties": {
+        "ComponentName": {
+          "type": "string"
+        },
+        "ComponentType": {
+          "enum": [
+            "MsiInstall"
+          ]
+        },
+        "Url": {
+          "type": "string",
+          "pattern": "/(http|https|ftp):\\/\\/[\\w-]+(\\.[\\w-]+)+([\\w.,@?^=%&amp;:\\/~+#-]*[\\w@?^=%&amp;\\/~+#-])?/"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "ProductId": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+        },
+        "Comment": {
+          "type": "string"
+        },
+        "DependsOn": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ComponentName": {
+                "type": "string"
+              },
+              "ComponentType": {
+                "enum": [
+                  "DirectoryCreate",
+                  "DirectoryDelete",
+                  "DirectoryCopy",
+                  "CommandRun",
+                  "FileDownload",
+                  "ChecksumFileDownload",
+                  "SymbolicLink",
+                  "ExeInstall",
+                  "MsiInstall",
+                  "WindowsFeatureInstall",
+                  "ZipInstall",
+                  "ServiceControl",
+                  "EnvironmentVariableSet",
+                  "EnvironmentVariableUniqueAppend",
+                  "EnvironmentVariableUniquePrepend",
+                  "RegistryKeySet",
+                  "RegistryValueSet",
+                  "FirewallRule"
+                ]
+              },
+              "required": [
+                "ComponentName",
+                "ComponentType"
+              ]
+            }
+          }
+        },
+        "required": [
+          "ComponentName",
+          "ComponentType",
+          "Url"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "WindowsFeatureInstall": {
+      "properties": {
+        "ComponentName": {
+          "type": "string"
+        },
+        "ComponentType": {
+          "enum": [
+            "WindowsFeatureInstall"
+          ]
+        },
+        "Name": {
+          "type": "string"
+        },
+        "Comment": {
+          "type": "string"
+        },
+        "DependsOn": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ComponentName": {
+                "type": "string"
+              },
+              "ComponentType": {
+                "enum": [
+                  "DirectoryCreate",
+                  "DirectoryDelete",
+                  "DirectoryCopy",
+                  "CommandRun",
+                  "FileDownload",
+                  "ChecksumFileDownload",
+                  "SymbolicLink",
+                  "ExeInstall",
+                  "MsiInstall",
+                  "WindowsFeatureInstall",
+                  "ZipInstall",
+                  "ServiceControl",
+                  "EnvironmentVariableSet",
+                  "EnvironmentVariableUniqueAppend",
+                  "EnvironmentVariableUniquePrepend",
+                  "RegistryKeySet",
+                  "RegistryValueSet",
+                  "FirewallRule"
+                ]
+              },
+              "required": [
+                "ComponentName",
+                "ComponentType"
+              ]
+            }
+          }
+        },
+        "required": [
+          "ComponentName",
+          "ComponentType",
+          "Name"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "ZipInstall": {
+      "properties": {
+        "ComponentName": {
+          "type": "string"
+        },
+        "ComponentType": {
+          "enum": [
+            "ZipInstall"
+          ]
+        },
+        "Url": {
+          "type": "string",
+          "pattern": "/(http|https|ftp):\\/\\/[\\w-]+(\\.[\\w-]+)+([\\w.,@?^=%&amp;:\\/~+#-]*[\\w@?^=%&amp;\\/~+#-])?/"
+        },
+        "Destination": {
+          "type": "string"
+        },
+        "Comment": {
+          "type": "string"
+        },
+        "DependsOn": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ComponentName": {
+                "type": "string"
+              },
+              "ComponentType": {
+                "enum": [
+                  "DirectoryCreate",
+                  "DirectoryDelete",
+                  "DirectoryCopy",
+                  "CommandRun",
+                  "FileDownload",
+                  "ChecksumFileDownload",
+                  "SymbolicLink",
+                  "ExeInstall",
+                  "MsiInstall",
+                  "WindowsFeatureInstall",
+                  "ZipInstall",
+                  "ServiceControl",
+                  "EnvironmentVariableSet",
+                  "EnvironmentVariableUniqueAppend",
+                  "EnvironmentVariableUniquePrepend",
+                  "RegistryKeySet",
+                  "RegistryValueSet",
+                  "FirewallRule"
+                ]
+              },
+              "required": [
+                "ComponentName",
+                "ComponentType"
+              ]
+            }
+          }
+        },
+        "required": [
+          "ComponentName",
+          "ComponentType",
+          "Url",
+          "Destination"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "ServiceControl": {
+      "properties": {
+        "ComponentName": {
+          "type": "string"
+        },
+        "ComponentType": {
+          "enum": [
+            "ServiceControl"
+          ]
+        },
+        "Name": {
+          "type": "string"
+        },
+        "StartupType": {
+          "enum": [
+            "Automatic",
+            "Disabled",
+            "Manual"
+          ]
+        },
+        "State": {
+          "enum": [
+            "Running",
+            "Stopped"
+          ]
+        },
+        "Comment": {
+          "type": "string"
+        },
+        "DependsOn": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ComponentName": {
+                "type": "string"
+              },
+              "ComponentType": {
+                "enum": [
+                  "DirectoryCreate",
+                  "DirectoryDelete",
+                  "DirectoryCopy",
+                  "CommandRun",
+                  "FileDownload",
+                  "ChecksumFileDownload",
+                  "SymbolicLink",
+                  "ExeInstall",
+                  "MsiInstall",
+                  "WindowsFeatureInstall",
+                  "ZipInstall",
+                  "ServiceControl",
+                  "EnvironmentVariableSet",
+                  "EnvironmentVariableUniqueAppend",
+                  "EnvironmentVariableUniquePrepend",
+                  "RegistryKeySet",
+                  "RegistryValueSet",
+                  "FirewallRule"
+                ]
+              },
+              "required": [
+                "ComponentName",
+                "ComponentType"
+              ]
+            }
+          }
+        },
+        "required": [
+          "ComponentName",
+          "ComponentType",
+          "Name",
+          "StartupType",
+          "State"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "EnvironmentVariableSet": {
+      "properties": {
+        "ComponentName": {
+          "type": "string"
+        },
+        "ComponentType": {
+          "enum": [
+            "EnvironmentVariableSet"
+          ]
+        },
+        "Name": {
+          "type": "string"
+        },
+        "Value": {
+          "type": "string"
+        },
+        "Target": {
+          "enum": [
+            "Machine",
+            "Process",
+            "User"
+          ]
+        },
+        "Comment": {
+          "type": "string"
+        },
+        "DependsOn": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ComponentName": {
+                "type": "string"
+              },
+              "ComponentType": {
+                "enum": [
+                  "DirectoryCreate",
+                  "DirectoryDelete",
+                  "DirectoryCopy",
+                  "CommandRun",
+                  "FileDownload",
+                  "ChecksumFileDownload",
+                  "SymbolicLink",
+                  "ExeInstall",
+                  "MsiInstall",
+                  "WindowsFeatureInstall",
+                  "ZipInstall",
+                  "ServiceControl",
+                  "EnvironmentVariableSet",
+                  "EnvironmentVariableUniqueAppend",
+                  "EnvironmentVariableUniquePrepend",
+                  "RegistryKeySet",
+                  "RegistryValueSet",
+                  "FirewallRule"
+                ]
+              },
+              "required": [
+                "ComponentName",
+                "ComponentType"
+              ]
+            }
+          }
+        },
+        "required": [
+          "ComponentName",
+          "ComponentType",
+          "Name",
+          "Value",
+          "Target"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "EnvironmentVariableUniqueAppend": {
+      "properties": {
+        "ComponentName": {
+          "type": "string"
+        },
+        "ComponentType": {
+          "enum": [
+            "EnvironmentVariableUniqueAppend"
+          ]
+        },
+        "Name": {
+          "type": "string"
+        },
+        "Values": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Target": {
+          "enum": [
+            "Machine",
+            "Process",
+            "User"
+          ]
+        },
+        "Comment": {
+          "type": "string"
+        },
+        "DependsOn": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ComponentName": {
+                "type": "string"
+              },
+              "ComponentType": {
+                "enum": [
+                  "DirectoryCreate",
+                  "DirectoryDelete",
+                  "DirectoryCopy",
+                  "CommandRun",
+                  "FileDownload",
+                  "ChecksumFileDownload",
+                  "SymbolicLink",
+                  "ExeInstall",
+                  "MsiInstall",
+                  "WindowsFeatureInstall",
+                  "ZipInstall",
+                  "ServiceControl",
+                  "EnvironmentVariableSet",
+                  "EnvironmentVariableUniqueAppend",
+                  "EnvironmentVariableUniquePrepend",
+                  "RegistryKeySet",
+                  "RegistryValueSet",
+                  "FirewallRule"
+                ]
+              },
+              "required": [
+                "ComponentName",
+                "ComponentType"
+              ]
+            }
+          }
+        },
+        "required": [
+          "ComponentName",
+          "ComponentType",
+          "Name",
+          "Values",
+          "Target"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "EnvironmentVariableUniquePrepend": {
+      "properties": {
+        "ComponentName": {
+          "type": "string"
+        },
+        "ComponentType": {
+          "enum": [
+            "EnvironmentVariableUniquePrepend"
+          ]
+        },
+        "Name": {
+          "type": "string"
+        },
+        "Values": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Target": {
+          "enum": [
+            "Machine",
+            "Process",
+            "User"
+          ]
+        },
+        "Comment": {
+          "type": "string"
+        },
+        "DependsOn": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ComponentName": {
+                "type": "string"
+              },
+              "ComponentType": {
+                "enum": [
+                  "DirectoryCreate",
+                  "DirectoryDelete",
+                  "DirectoryCopy",
+                  "CommandRun",
+                  "FileDownload",
+                  "ChecksumFileDownload",
+                  "SymbolicLink",
+                  "ExeInstall",
+                  "MsiInstall",
+                  "WindowsFeatureInstall",
+                  "ZipInstall",
+                  "ServiceControl",
+                  "EnvironmentVariableSet",
+                  "EnvironmentVariableUniqueAppend",
+                  "EnvironmentVariableUniquePrepend",
+                  "RegistryKeySet",
+                  "RegistryValueSet",
+                  "FirewallRule"
+                ]
+              },
+              "required": [
+                "ComponentName",
+                "ComponentType"
+              ]
+            }
+          }
+        },
+        "required": [
+          "ComponentName",
+          "ComponentType",
+          "Name",
+          "Values",
+          "Target"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "RegistryKeySet": {
+      "properties": {
+        "ComponentName": {
+          "type": "string"
+        },
+        "ComponentType": {
+          "enum": [
+            "RegistryKeySet"
+          ]
+        },
+        "Key": {
+          "type": "string"
+        },
+        "ValueName": {
+          "type": "string"
+        },
+        "Comment": {
+          "type": "string"
+        },
+        "DependsOn": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ComponentName": {
+                "type": "string"
+              },
+              "ComponentType": {
+                "enum": [
+                  "DirectoryCreate",
+                  "DirectoryDelete",
+                  "DirectoryCopy",
+                  "CommandRun",
+                  "FileDownload",
+                  "ChecksumFileDownload",
+                  "SymbolicLink",
+                  "ExeInstall",
+                  "MsiInstall",
+                  "WindowsFeatureInstall",
+                  "ZipInstall",
+                  "ServiceControl",
+                  "EnvironmentVariableSet",
+                  "EnvironmentVariableUniqueAppend",
+                  "EnvironmentVariableUniquePrepend",
+                  "RegistryKeySet",
+                  "RegistryValueSet",
+                  "FirewallRule"
+                ]
+              },
+              "required": [
+                "ComponentName",
+                "ComponentType"
+              ]
+            }
+          }
+        },
+        "required": [
+          "ComponentName",
+          "ComponentType",
+          "Key",
+          "ValueName"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "RegistryValueSet": {
+      "properties": {
+        "ComponentName": {
+          "type": "string"
+        },
+        "ComponentType": {
+          "enum": [
+            "RegistryValueSet"
+          ]
+        },
+        "Key": {
+          "type": "string"
+        },
+        "ValueName": {
+          "type": "string"
+        },
+        "ValueType": {
+          "type": "string"
+        },
+        "ValueData": {
+          "enum": [
+            "Binary",
+            "Dword",
+            "ExpandString",
+            "MultiString",
+            "Qword",
+            "String"
+          ]
+        },
+        "Hex": {
+          "type": "boolean"
+        },
+        "Comment": {
+          "type": "string"
+        },
+        "DependsOn": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ComponentName": {
+                "type": "string"
+              },
+              "ComponentType": {
+                "enum": [
+                  "DirectoryCreate",
+                  "DirectoryDelete",
+                  "DirectoryCopy",
+                  "CommandRun",
+                  "FileDownload",
+                  "ChecksumFileDownload",
+                  "SymbolicLink",
+                  "ExeInstall",
+                  "MsiInstall",
+                  "WindowsFeatureInstall",
+                  "ZipInstall",
+                  "ServiceControl",
+                  "EnvironmentVariableSet",
+                  "EnvironmentVariableUniqueAppend",
+                  "EnvironmentVariableUniquePrepend",
+                  "RegistryKeySet",
+                  "RegistryValueSet",
+                  "FirewallRule"
+                ]
+              },
+              "required": [
+                "ComponentName",
+                "ComponentType"
+              ]
+            }
+          }
+        },
+        "required": [
+          "ComponentName",
+          "ComponentType",
+          "Key",
+          "ValueName",
+          "ValueType",
+          "ValueData"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "FirewallRule": {
+      "properties": {
+        "ComponentName": {
+          "type": "string"
+        },
+        "ComponentType": {
+          "enum": [
+            "FirewallRule"
+          ]
+        },
+        "Protocol": {
+          "enum": [
+            "TCP",
+            "UDP"
+          ]
+        },
+        "LocalPort": {
+          "type": "integer"
+        },
+        "Direction": {
+          "enum": [
+            "Inbound",
+            "Outbound"
+          ]
+        },
+        "Action": {
+          "enum": [
+            "Allow",
+            "Deny"
+          ]
+        },
+        "Comment": {
+          "type": "string"
+        },
+        "DependsOn": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ComponentName": {
+                "type": "string"
+              },
+              "ComponentType": {
+                "enum": [
+                  "DirectoryCreate",
+                  "DirectoryDelete",
+                  "DirectoryCopy",
+                  "CommandRun",
+                  "FileDownload",
+                  "ChecksumFileDownload",
+                  "SymbolicLink",
+                  "ExeInstall",
+                  "MsiInstall",
+                  "WindowsFeatureInstall",
+                  "ZipInstall",
+                  "ServiceControl",
+                  "EnvironmentVariableSet",
+                  "EnvironmentVariableUniqueAppend",
+                  "EnvironmentVariableUniquePrepend",
+                  "RegistryKeySet",
+                  "RegistryValueSet",
+                  "FirewallRule"
+                ]
+              },
+              "required": [
+                "ComponentName",
+                "ComponentType"
+              ]
+            }
+          }
+        },
+        "required": [
+          "ComponentName",
+          "ComponentType",
+          "Protocol",
+          "LocalPort",
+          "Direction",
+          "Action"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

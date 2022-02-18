@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!--
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   
+       http://www.apache.org/licenses/LICENSE-2.0
+   
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<package>
+  <metadata>
+    <id>Carbon</id>
+    <title>Carbon</title>
+    <version>2.5.0</version>
+    <authors>Aaron Jensen</authors>
+    <owners>Aaron Jensen</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>http://get-carbon.org</projectUrl>
+    <iconUrl>http://get-carbon.org/icon.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Carbon is a PowerShell module for automating the configuration of Windows 7, 8, 2008, and 2012, Windows services, applications, and websites.</summary>
+    <description>Carbon is a PowerShell module for automating the configuration Windows 7, 8, 2008, and 2012 and automation the installation and configuration of Windows applications, websites, and services. It can configure and manage:
+
+ * Local users and groups
+ * IIS websites, virtual directories, and applications
+ * File system, registry, and certificate permissions
+ * Certificates
+ * Privileges
+ * Services
+ * Encryption
+ * Junctions
+ * Hosts file
+ * INI files
+ * Performance counters
+ * Shares
+ * .NET connection strings and app settings
+ * And much more!
+
+All functions are idempotent: when run multiple times with the same arguments, your system will be in the same state without failing or producing errors.</description>
+    <language>en-us</language>
+    <releaseNotes>$ReleaseNotes$</releaseNotes>
+    <copyright>Aaron Jensen and WebMD Health Services</copyright>
+    <tags>$Tags$</tags>
+  </metadata>
+  <files>
+    <file src=".\Carbon\**\*" target="Carbon" exclude="**\*.pdb" />
+    <file src=".\examples\**\*" target="Examples" />
+    <file src=".\Tools\chocolateyInstall.ps1" target="Tools" />
+    <file src=".\Tools\chocolateyUninstall.ps1" target="Tools" />
+    <file src=".\Tools\VERIFICATION.md" target="Tools" />
+    <file src=".\LICENSE.txt" target="" />
+    <file src=".\NOTICE.txt" target="" />
+    <file src=".\CHANGELOG.md" target="" />
+    <file src=".\README.md" target="" />
+  </files>
+</package>

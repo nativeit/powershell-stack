@@ -1,0 +1,226 @@
+PublishOn:
+ - master
+ - prerelease
+
+Build:
+- Version:
+    Path: Carbon\Carbon.psd1
+    Prerelease:
+    - prerelease: rc$(WHISKEY_BUILD_NUMBER)
+- PowerShell:
+    OnlyBy: BuildServer
+    Path: Save-CarbonSigningKey.ps1
+- SetVariable:
+    SignAssembly: False
+    Constants: ""
+- SetVariable:
+    IfExists: Source\Carbon.snk
+    SignAssembly: True
+    Constants: SIGNED
+- MSBuild:
+    Path: Source\Carbon.sln
+    Property:
+    - SignAssembly=$(SignAssembly)
+- DotNet:
+    Command: publish
+    Path: Source\Test\Carbon.Test.csproj
+    Argument:
+    - --no-build
+    - --framework=netcoreapp2.1
+    - --configuration=$(WHISKEY_MSBUILD_CONFIGURATION)
+- DotNet:
+    Command: test
+    Path: Source\Test\Carbon.Test.csproj
+    Argument:
+    - --no-build
+    - --framework=netcoreapp2.1
+    - --configuration=$(WHISKEY_MSBUILD_CONFIGURATION)
+    - --results-directory=$(WHISKEY_OUTPUT_DIRECTORY)
+    - --logger=trx
+- NUnit3:
+    Path: Source\Test\bin\$(WHISKEY_MSBUILD_CONFIGURATION)\net452\Carbon.Test.dll
+- Pipeline:
+    Name: PublishBin
+- MergeFile:
+    OnlyBy: BuildServer
+    Path: 
+    - Carbon\Functions\*.ps1
+    - Carbon\Carbon.psm1.Import.Iis.ps1
+    - Carbon\Carbon.psm1.Import.Lcm.ps1
+    - Carbon\Carbon.psm1.Import.Post.ps1
+    Exclude:
+    - "*\\*-Iis*"
+    - "*\\Initialize-Lcm.ps1"
+    - "*\\Use-CallerPreference.ps1"
+    DestinationPath: Carbon\Carbon.psm1
+    TextSeparator: "$(NewLine)$(NewLine)"
+    DeleteSourceFiles: true
+- MergeFile:
+    OnlyBy: BuildServer
+    Path: 
+    - "Carbon\\Functions\\*-Iis*.ps1"
+    DestinationPath: Carbon\Functions\Iis.ps1
+    TextSeparator: "$(NewLine)$(NewLine)"
+    DeleteSourceFiles: true
+- Pipeline:
+    Name: Tests
+- SetVariableFromPowerShellDataFile:
+    Path: Carbon\Carbon.psd1
+    Variables:
+        PrivateData:
+            PSData:
+                ReleaseNotes: RELEASE_NOTES
+                Tags: TAGS
+- CopyFile:
+    Path:
+    - LICENSE.txt
+    - NOTICE.txt
+    - README.md
+    - CHANGELOG.md
+    DestinationDirectory: Carbon
+- NuGetPack:
+    Path: Carbon.nuspec
+    Properties:
+        ReleaseNotes: $(RELEASE_NOTES)
+        Tags: $(TAGS)
+- Zip:
+    ArchivePath: .output\Carbon.zip
+    Path:
+    - Carbon
+    - examples
+    Exclude:
+    - "*.pdb"
+    - "*.orig"
+
+PublishBin:
+- MSBuild:
+    Path:
+    - Source\Carbon.csproj
+    - Source\Iis\*.csproj
+    - Source\Xdt\*.csproj
+    Target: publish
+    Property:
+    - TargetFramework=net452
+    - PublishDir=$(WHISKEY_BUILD_ROOT)\Carbon\bin\fullclr
+- MSBuild:
+    Path:
+    - Source\Carbon.csproj
+    - Source\Iis\*.csproj
+    - Source\Xdt\*.csproj
+    Target: publish
+    Property:
+    - TargetFramework=netstandard2.0
+    - PublishDir=$(WHISKEY_BUILD_ROOT)\Carbon\bin\coreclr
+    - SelfContained=false
+- Delete:
+    OnlyDuring: Build
+    OnlyBy: BuildServer
+    Path: Carbon\bin\*.pdb
+# We don't need to include any assemblies that ship with PowerShell
+- Delete:
+    OnlyDuring: Build
+    Path:
+    - Carbon\bin\coreclr\runtimes
+    - Carbon\bin\coreclr\*.json
+    - Carbon\bin\coreclr\System.*.dll
+    - Carbon\bin\coreclr\Microsoft.Win32.Registry.dll
+
+Tests:
+- TaskDefaults:
+    Pester4:
+        DescribeDurationReportCount: 20
+        WarningAction: SilentlyContinue
+- PowerShell:
+    OnlyDuring: Build
+    Path: Start-CarbonTest.ps1
+- Pester4:
+    OnlyBy: Developer
+    Script: 
+    - Test\Bin.Tests.ps1
+    - Test\Import-Carbon.Tests.ps1
+    - Test\LicenseNotices.Tests.ps1
+    - Test\*.ps1xml.Tests.ps1
+    - Test\Website.Tests.ps1
+    - Test\System.Diagnostics.Process.types.Tests.ps1
+- PowerShell:
+    OnlyDuring: Build
+    OnlyBy: Developer
+    Path: Tools\Blade\blade.ps1
+    Argument:
+        Path: 
+        - Test\Test-Documentation.ps1
+        - Test\Test-ImportCarbon.ps1
+# These tests fail when run in parallel so they get run first.
+- Pester4:
+    OnlyBy: BuildServer
+    Script:
+    - Test\*Iis*.ps1
+    - Test\Carbon_*.Tests.ps1
+- Parallel:
+    OnlyBy: BuildServer
+    Queues:
+    - Tasks:
+        - Pester4:
+            Script: 
+            - Test\*-ScheduledTask.Tests.ps1
+    - Tasks:
+        - Pester4:
+            Script: 
+            - Test\*.Tests.ps1
+            Exclude:
+            - "*\\Test\\*Iis*.ps1"
+            - "*\\Test\\Carbon_*.Tests.ps1"
+            - "*\\Test\\*-ScheduledTask.Tests.ps1"
+    - Tasks:
+        - PowerShell:
+            WarningAction: SilentlyContinue
+            OnlyDuring: Build
+            Path: Invoke-CarbonBladeTest.ps1
+            Argument:
+                Recurse: true
+                Path: Test
+                PassThru: true
+- PowerShell:
+    OnlyDuring: Build
+    OnlyBy: Developer
+    Path: Complete-CarbonTest.ps1
+- PowerShell:
+    OnlyBy: BuildServer
+    Path: Format-TestResult.ps1
+    Argument:
+        OutputPath: $(WHISKEY_OUTPUT_DIRECTORY)
+
+Publish:
+- PublishPowerShellModule:
+    UnlessExists: env:APPVEYOR_PULL_REQUEST_NUMBER
+    Path: Carbon
+    RepositoryName: PSGallery
+    RepositoryUri: https://www.powershellgallery.com/api/v2/
+    ApiKeyID: powershellgallery.com
+- NuGetPush:
+    OnlyOnBranch:
+    - master
+    UnlessExists: env:APPVEYOR_PULL_REQUEST_NUMBER
+    Uri: https://nuget.org/api/v2/package
+    ApiKeyID: nuget.org
+    SkipUploadedCheck: true
+- NuGetPush:
+    OnlyOnBranch:
+    - master
+    UnlessExists: env:APPVEYOR_PULL_REQUEST_NUMBER
+    Uri: https://chocolatey.org/api/v2/package
+    ApiKeyID: chocolatey.org
+    SkipUploadedCheck: true
+- GitHubRelease:
+    UnlessExists: env:APPVEYOR_PULL_REQUEST_NUMBER
+    RepositoryName: webmd-health-services/Carbon
+    ApiKeyID: github.com
+    Tag: $(WHISKEY_SEMVER2_NO_BUILD_METADATA)
+    Commitish: $(WHISKEY_SCM_COMMIT_ID)
+    Name: $(WHISKEY_SEMVER2_NO_BUILD_METADATA)
+    Description: $(RELEASE_NOTES)
+    Assets:
+    - Path: .output\Carbon.zip
+      ContentType: application/zip
+      Name: Carbon-$(WHISKEY_SEMVER2_NO_BUILD_METADATA).zip
+    

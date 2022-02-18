@@ -1,0 +1,854 @@
+[
+    {
+        "Name":  "Add-CGroupMember",
+        "Tags":  [ "Groups", "Identity", "Principal" ]
+    },
+    {
+        "Name":  "Add-CIisDefaultDocument",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Add-CTrustedHost",
+        "Tags":  [ "PowerShell", "Trusted Host" ]
+    },
+    {
+        "Name":  "Assert-CAdminPrivilege",
+        "Tags":  [ "Security" ]
+    },
+    {
+        "Name":  "Assert-CFirewallConfigurable",
+        "Tags":  [ "Firewall" ]
+    },
+    {
+        "Name":  "Assert-CService",
+        "Tags":  [ "Service" ]
+    },
+    {
+        "Name":  "Carbon_EnvironmentVariable",
+        "Tags": [ "DSC", "DSC Resources", "Computer", "Environment" ]
+    },
+    {
+        "Name":  "Carbon_FirewallRule",
+        "Tags": [ "DSC", "DSC Resources", "Firewall", "Networking" ]
+    },
+    {
+        "Name":  "Carbon_Group",
+        "Tags": [ "DSC", "DSC Resources", "Groups", "Identity", "Principal" ]
+    },
+    {
+        "Name":  "Carbon_IniFile",
+        "Tags": [ "DSC", "DSC Resources", "INI", "Text" ]
+    },
+    {
+        "Name":  "Carbon_Permission",
+        "Tags": [ "DSC", "DSC Resources", "Security", "File System", "NTFS", "Registry", "Certificates", "ACL" ]
+    },
+    {
+        "Name":  "Carbon_Privilege",
+        "Tags": [ "DSC", "DSC Resources", "Security", "Privileges", "Users", "Groups", "Identity", "Principal" ]
+    },
+    {
+        "Name":  "Carbon_ScheduledTask",
+        "Tags": [ "DSC", "DSC Resources", "Scheduled Tasks" ]
+    },
+    {
+        "Name":  "Carbon_Service",
+        "Tags": [ "DSC", "DSC Resources", "Service" ]
+    },
+    {
+        "Name":  "Clear-CDscLocalResourceCache",
+        "Tags":  [ "DSC" ]
+    },
+    {
+        "Name":  "Clear-CMofAuthoringMetadata",
+        "Tags":  [ "DSC" ]
+    },
+    {
+        "Name":  "Clear-CTrustedHost",
+        "Tags":  [ "PowerShell", "Trusted Host" ]
+    },
+    {
+        "Name":  "Complete-CJob",
+        "Tags":  [ "PowerShell" ]
+    },
+    {
+        "Name":  "Compress-CItem",
+        "Tags":  [ "File System", "ZIP", "Compression" ]
+    },
+    {
+        "Name":  "ConvertFrom-CBase64",
+        "Tags":  [ "Text" ]
+    },
+    {
+        "Name":  "Convert-CSecureStringToString",
+        "Tags":  [ "Security" ]
+    },
+    {
+        "Name":  "ConvertTo-CBase64",
+        "Tags":  [ "Text" ]
+    },
+    {
+        "Name":  "ConvertTo-CContainerInheritanceFlags",
+        "Tags":  [ "Security", "ACL" ]
+    },
+    {
+        "Name":  "ConvertTo-CInheritanceFlag",
+        "Tags":  [ "Security", "ACL" ]
+    },
+    {
+        "Name":  "ConvertTo-CPropagationFlag",
+        "Tags":  [ "Security", "ACL" ]
+    },
+    {
+        "Name":  "ConvertTo-CSecurityIdentifier",
+        "Tags":  [ "Users", "Groups", "SID", "Identity", "Principal" ]
+    },
+    {
+        "Name":  "Convert-CXmlFile",
+        "Tags":  [ "Xml", "Text" ]
+    },
+    {
+        "Name":  "Copy-CDscResource",
+        "Tags":  [ "DSC" ]
+    },
+    {
+        "Name":  "Disable-CFirewallStatefulFtp",
+        "Tags":  [ "Firewall" ]
+    },
+    {
+        "Name":  "Disable-CIEEnhancedSecurityConfiguration",
+        "Tags":  [ "Internet Explorer", "COM" ]
+    },
+    {
+        "Name":  "Disable-CIisSecurityAuthentication",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Disable-CNtfsCompression",
+        "Tags":  [ "File System", "NTFS" ]
+    },
+    {
+        "Name":  "Enable-CFirewallStatefulFtp",
+        "Tags":  [ "Firewall" ]
+    },
+    {
+        "Name":  "Enable-CIEActivationPermission",
+        "Tags":  [ "Internet Explorer", "COM" ]
+    },
+    {
+        "Name":  "Enable-CIisDirectoryBrowsing",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Enable-CIisSecurityAuthentication",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Enable-CIisSsl",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Enable-CNtfsCompression",
+        "Tags":  [ "File System", "NTFS" ]
+    },
+    {
+        "Name":  "Expand-CItem",
+        "Tags":  [ "File System", "ZIP", "Compression" ]
+    },
+    {
+        "Name":  "Find-CADUser",
+        "Tags":  [ "Users", "Active Directory" ]
+    },
+    {
+        "Name":  "Format-CADSearchFilterValue",
+        "Tags":  [ "Active Directory" ]
+    },
+    {
+        "Name":  "Get-CADDomainController",
+        "Tags":  [ "Active Directory" ]
+    },
+    {
+        "Name":  "Get-CCertificate",
+        "Tags":  [ "Certificates" ]
+    },
+    {
+        "Name":  "Get-CCertificateStore",
+        "Tags":  [ "Certificates" ]
+    },
+    {
+        "Name":  "Get-CComPermission",
+        "Tags":  [ "COM", "Security", "ACL" ]
+    },
+    {
+        "Name":  "Get-CComSecurityDescriptor",
+        "Tags":  [ "COM", "Security", "ACL" ]
+    },
+    {
+        "Name":  "Get-CDscError",
+        "Tags":  [ "DSC" ]
+    },
+    {
+        "Name":  "Get-CDscWinEvent",
+        "Tags":  [ "DSC" ]
+    },
+    {
+        "Name":  "Get-CFileShare",
+        "Tags":  [ "Shares", "SMB" ]
+    },
+    {
+        "Name":  "Get-CFileSharePermission",
+        "Tags":  [ "Shares", "SMB", "Security" ]
+    },
+    {
+        "Name":  "Get-CFirewallRule",
+        "Tags":  [ "Firewall" ]
+    },
+    {
+        "Name":  "Get-CGroup",
+        "Tags":  [ "Groups" ]
+    },
+    {
+        "Name": "Get-CHttpUrlAcl",
+        "Tags": [ "Security", "HTTP", "WCF", "netsh", "ACL" ]
+    },
+    {
+        "Name":  "Get-CIisApplication",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Get-CIisAppPool",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Get-CIisConfigurationSection",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Get-CIisHttpHeader",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Get-CIisHttpRedirect",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Get-CIisMimeMap",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Get-CIisSecurityAuthentication",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Get-CIisVersion",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Get-CIisWebsite",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Get-CIPAddress",
+        "Tags":  [ "Networking", "IP" ]
+    },
+    {
+        "Name":  "Get-CMsi",
+        "Tags":  [ "MSI", "Installers" ]
+    },
+    {
+        "Name":  "Get-CMsmqMessageQueue",
+        "Tags":  [ "MSMQ" ]
+    },
+    {
+        "Name":  "Get-CMsmqMessageQueuePath",
+        "Tags":  [ "MSMQ" ]
+    },
+    {
+        "Name":  "Get-CPathProvider",
+        "Tags":  [ "Path", "PowerShell" ]
+    },
+    {
+        "Name":  "Get-CPathToHostsFile",
+        "Tags":  [ "Hosts File" ]
+    },
+    {
+        "Name":  "Get-CPerformanceCounter",
+        "Tags":  [ "Performance Counters" ]
+    },
+    {
+        "Name":  "Get-CPermission",
+        "Tags":  [ "Security", "File System", "NTFS", "Registry", "Certificates", "ACL" ]
+    },
+    {
+        "Name":  "Get-CPowerShellModuleInstallPath",
+        "Tags":  [ "PowerShell" ]
+    },
+    {
+        "Name":  "Get-CPowershellPath",
+        "Tags":  [ "PowerShell" ]
+    },
+    {
+        "Name":  "Get-CPrivilege",
+        "Tags":  [ "Privileges" ]
+    },
+    {
+        "Name":  "Get-CProgramInstallInfo",
+        "Tags":  [ "Computer", "Programs", "Installers", "MSI" ]
+    },
+    {
+        "Name":  "Get-CRegistryKeyValue",
+        "Tags":  [ "Registry" ]
+    },
+    {
+        "Name":  "Get-CScheduledTask",
+        "Tags":  [ "Scheduled Tasks" ]
+    },
+    {
+        "Name":  "Get-CServiceAcl",
+        "Tags":  [ "Service" ]
+    },
+    {
+        "Name":  "Get-CServiceConfiguration",
+        "Tags":  [ "Service" ]
+    },
+    {
+        "Name":  "Get-CServicePermission",
+        "Tags":  [ "Service", "Security", "ACL" ]
+    },
+    {
+        "Name":  "Get-CServiceSecurityDescriptor",
+        "Tags":  [ "Service" ]
+    },
+    {
+        "Name":  "Get-CSslCertificateBinding",
+        "Tags":  [ "Certificates" ]
+    },
+    {
+        "Name":  "Get-CTrustedHost",
+        "Tags":  [ "PowerShell" ]
+    },
+    {
+        "Name":  "Get-CUser",
+        "Tags":  [ "Users", "Identity", "Principal" ]
+    },
+    {
+        "Name":  "Get-CWindowsFeature",
+        "Tags":  [ "Windows Features" ]
+    },
+    {
+        "Name":  "Get-CWmiLocalUserAccount",
+        "Tags":  [ "Users", "Identity", "Principal" ]
+    },
+    {
+        "Name":  "Grant-CComPermission",
+        "Tags":  [ "COM" ]
+    },
+    {
+        "Name":  "Grant-CMsmqMessageQueuePermission",
+        "Tags":  [ "MSMQ" ]
+    },
+    {
+        "Name": "Grant-CHttpUrlPermission",
+        "Tags": [ "Security", "HTTP", "WCF", "netsh", "ACL" ]
+    },
+    {
+        "Name":  "Grant-CPermission",
+        "Tags":  [ "Security", "File System", "NTFS", "Registry", "Certificates", "ACL" ]
+    },
+    {
+        "Name":  "Grant-CPrivilege",
+        "Tags":  [ "Privileges", "Security" ]
+    },
+    {
+        "Name":  "Grant-CServiceControlPermission",
+        "Tags":  [ "Service", "Security", "ACL" ]
+    },
+    {
+        "Name":  "Grant-CServicePermission",
+        "Tags":  [ "Service", "Security", "ACL" ]
+    },
+    {
+        "Name":  "Initialize-CLcm",
+        "Tags":  [ "DSC" ]
+    },
+    {
+        "Name":  "Install-CCertificate",
+        "Tags":  [ "Certificates" ]
+    },
+    {
+        "Name":  "Install-CDirectory",
+        "Tags":  [ "File System", "NTFS", "Directory" ]
+    },
+    {
+        "Name":  "Install-CFileShare",
+        "Tags":  [ "Shares", "SMB" ]
+    },
+    {
+        "Name":  "Install-CGroup",
+        "Tags":  [ "Groups", "Identity", "Principal" ]
+    },
+    {
+        "Name":  "Install-CIisApplication",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Install-CIisAppPool",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Install-CIisVirtualDirectory",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Install-CIisWebsite",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Install-CJunction",
+        "Tags":  [ "File System", "NTFS", "Junctions" ]
+    },
+    {
+        "Name":  "Install-CMsi",
+        "Tags":  [ "MSI", "Installers", "Programs" ]
+    },
+    {
+        "Name":  "Install-CMsmq",
+        "Tags":  [ "MSMQ" ]
+    },
+    {
+        "Name":  "Install-CMsmqMessageQueue",
+        "Tags":  [ "MSMQ" ]
+    },
+    {
+        "Name":  "Install-CPerformanceCounter",
+        "Tags":  [ "Performance Counters" ]
+    },
+    {
+        "Name":  "Install-CRegistryKey",
+        "Tags":  [ "Registry" ]
+    },
+    {
+        "Name":  "Install-CScheduledTask",
+        "Tags":  [ "Scheduled Tasks" ]
+    },
+    {
+        "Name":  "Install-CService",
+        "Tags":  [ "Service" ]
+    },
+    {
+        "Name":  "Install-CUser",
+        "Tags":  [ "Users", "Identity", "Principal" ]
+    },
+    {
+        "Name":  "Install-CWindowsFeature",
+        "Tags":  [ "Windows Features", "Programs" ]
+    },
+    {
+        "Name":  "Invoke-CAppCmd",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Invoke-CPowerShell",
+        "Tags":  [ "PowerShell" ]
+    },
+    {
+        "Name":  "Join-CIisVirtualPath",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Lock-CIisConfigurationSection",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "New-CCredential",
+        "Tags":  [ "Security", "Credential" ]
+    },
+    {
+        "Name":  "New-CJunction",
+        "Tags":  [ "File System", "NTFS", "Junctions" ]
+    },
+    {
+        "Name":  "New-CRsaKeyPair",
+        "Tags":  [ "Cryptography", "Encryption", "RSA" ]
+    },
+    {
+        "Name":  "New-CTempDirectory",
+        "Tags":  [ "File System", "Directory" ]
+    },
+    {
+        "Name":  "Disable-CAclInheritance",
+        "Tags":  [ "Security", "File System", "NTFS" ]
+    },
+    {
+        "Name":  "Enable-CAclInheritance",
+        "Tags":  [ "Security", "File System", "NTFS" ]
+    },
+    {
+        "Name":  "Protect-CString",
+        "Tags":  [ "Cryptography", "Encryption" ]
+    },
+    {
+        "Name":  "Read-CFile",
+        "Tags":  [ "File System", "NTFS", "Text" ]
+    },
+    {
+        "Name":  "Remove-CDotNetAppSetting",
+        "Tags":  [ ".NET" ]
+    },
+    {
+        "Name":  "Remove-CEnvironmentVariable",
+        "Tags":  [ "Computer", "Environment" ]
+    },
+    {
+        "Name":  "Remove-CGroupMember",
+        "Tags":  [ "Groups", "Identity", "Principal" ]
+    },
+    {
+        "Name":  "Remove-CHostsEntry",
+        "Tags":  [ "Hosts File" ]
+    },
+    {
+        "Name":  "Remove-CIisMimeMap",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Remove-CIniEntry",
+        "Tags":  [ "INI", "Text" ]
+    },
+    {
+        "Name":  "Remove-CJunction",
+        "Tags":  [ "File System", "NTFS", "Junctions" ]
+    },
+    {
+        "Name":  "Remove-CRegistryKeyValue",
+        "Tags":  [ "Registry" ]
+    },
+    {
+        "Name":  "Remove-CSslCertificateBinding",
+        "Tags":  [ "Certificates", "SSL", "IIS" ]
+    },
+    {
+        "Name":  "Reset-CHostsFile",
+        "Tags":  [ "Hosts File" ]
+    },
+    {
+        "Name":  "Reset-CMsmqQueueManagerID",
+        "Tags":  [ "MSMQ" ]
+    },
+    {
+        "Name":  "Resolve-CFullPath",
+        "Tags":  [ "Path" ]
+    },
+    {
+        "Name":  "Resolve-CIdentity",
+        "Tags":  [ "Users", "Groups", "SID", "Security", "Identity", "Principal" ]
+    },
+    {
+        "Name":  "Resolve-CIdentityName",
+        "Tags":  [ "Users", "Groups", "SID", "Security", "Identity", "Principal" ]
+    },
+    {
+        "Name":  "Resolve-CNetPath",
+        "Tags":  [ "Computer" ]
+    },
+    {
+        "Name":  "Resolve-CPathCase",
+        "Tags":  [ "Path" ]
+    },
+    {
+        "Name":  "Resolve-CRelativePath",
+        "Tags":  [ "Path" ]
+    },
+    {
+        "Name":  "Restart-CRemoteService",
+        "Tags":  [ "Service" ]
+    },
+    {
+        "Name":  "Revoke-CComPermission",
+        "Tags":  [ "COM", "Security" ]
+    },
+    {
+        "Name": "Revoke-CHttpUrlPermission",
+        "Tags": [ "Security", "HTTP", "WCF", "netsh", "ACL" ]
+    },
+    {
+        "Name":  "Revoke-CPermission",
+        "Tags":  [ "Security", "NTFS", "File System", "Registry", "Certificates", "ACL" ]
+    },
+    {
+        "Name":  "Revoke-CPrivilege",
+        "Tags":  [ "Privileges", "Security" ]
+    },
+    {
+        "Name":  "Revoke-CServicePermission",
+        "Tags":  [ "Service", "Security", "ACL" ]
+    },
+    {
+        "Name":  "Set-CDotNetAppSetting",
+        "Tags":  [ ".NET" ]
+    },
+    {
+        "Name":  "Set-CDotNetConnectionString",
+        "Tags":  [ ".NET" ]
+    },
+    {
+        "Name":  "Set-CEnvironmentVariable",
+        "Tags":  [ "Computer" ]
+    },
+    {
+        "Name":  "Set-CHostsEntry",
+        "Tags":  [ "Hosts File" ]
+    },
+    {
+        "Name":  "Set-CIisHttpHeader",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Set-CIisHttpRedirect",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Set-CIisMimeMap",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Set-CIisWebsiteID",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Set-CIisWebsiteSslCertificate",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Set-CIisWindowsAuthentication",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Set-CIniEntry",
+        "Tags":  [ "INI", "Text" ]
+    },
+    {
+        "Name":  "Set-CRegistryKeyValue",
+        "Tags":  [ "Registry" ]
+    },
+    {
+        "Name":  "Set-CServiceAcl",
+        "Tags":  [ "Service", "ACL", "Security" ]
+    },
+    {
+        "Name":  "Set-CSslCertificateBinding",
+        "Tags":  [ "Certificates", "SSL", "IIS" ]
+    },
+    {
+        "Name":  "Set-CTrustedHost",
+        "Tags":  [ "PowerShell", "Trusted Host" ]
+    },
+    {
+        "Name":  "Split-CIni",
+        "Tags":  [ "INI", "Text" ]
+    },
+    {
+        "Name":  "Start-CDscPullConfiguration",
+        "Tags":  [ "DSC" ]
+    },
+    {
+        "Name":  "Test-CAdminPrivilege",
+        "Tags":  [ "Security" ]
+    },
+    {
+        "Name":  "Test-CDotNet",
+        "Tags":  [ ".NET" ]
+    },
+    {
+        "Name":  "Test-CDscTargetResource",
+        "Tags":  [ "DSC" ]
+    },
+    {
+        "Name":  "Test-CFileShare",
+        "Tags":  [ "Shares", "SMB" ]
+    },
+    {
+        "Name":  "Test-CFirewallStatefulFtp",
+        "Tags":  [ "Firewall" ]
+    },
+    {
+        "Name":  "Test-CGroup",
+        "Tags":  [ "Groups", "Identity", "Principal" ]
+    },
+    {
+        "Name":  "Test-CGroupMember",
+        "Tags":  [ "Groups", "Identity", "Principal" ]
+    },
+    {
+        "Name":  "Test-CIdentity",
+        "Tags":  [ "Users", "Groups", "Security", "Identity", "Principal", "SID" ]
+    },
+    {
+        "Name":  "Test-CIisAppPool",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Test-CIisConfigurationSection",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Test-CIisSecurityAuthentication",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Test-CIisWebsite",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Test-CIPAddress",
+        "Tags":  [ "Networking", "IP" ]
+    },
+    {
+        "Name":  "Test-CMsmqMessageQueue",
+        "Tags":  [ "MSMQ" ]
+    },
+    {
+        "Name":  "Test-CNtfsCompression",
+        "Tags":  [ "File System", "NTFS" ]
+    },
+    {
+        "Name":  "Test-COSIs32Bit",
+        "Tags":  [ "Computer", "Windows", "Operating System", "OS" ]
+    },
+    {
+        "Name":  "Test-COSIs64Bit",
+        "Tags":  [ "Computer", "Windows", "Operating System", "OS" ]
+    },
+    {
+        "Name":  "Test-CPathIsJunction",
+        "Tags":  [ "File System", "Path", "Junctions", "NTFS" ]
+    },
+    {
+        "Name":  "Test-CPerformanceCounter",
+        "Tags":  [ "Performance Counters" ]
+    },
+    {
+        "Name":  "Test-CPerformanceCounterCategory",
+        "Tags":  [ "Performance Counters" ]
+    },
+    {
+        "Name":  "Test-CPermission",
+        "Tags":  [ "Security", "File System", "NTFS", "Registry", "Certificates", "ACL" ]
+    },
+    {
+        "Name":  "Test-CPowerShellIs32Bit",
+        "Tags":  [ "PowerShell" ]
+    },
+    {
+        "Name":  "Test-CPowerShellIs64Bit",
+        "Tags":  [ "PowerShell" ]
+    },
+    {
+        "Name":  "Test-CPrivilege",
+        "Tags":  [ "Privileges", "Security" ]
+    },
+    {
+        "Name":  "Test-CRegistryKeyValue",
+        "Tags":  [ "Registry" ]
+    },
+    {
+        "Name":  "Test-CScheduledTask",
+        "Tags":  [ "Scheduled Tasks" ]
+    },
+    {
+        "Name":  "Test-CService",
+        "Tags":  [ "Service" ]
+    },
+    {
+        "Name":  "Test-CSslCertificateBinding",
+        "Tags":  [ "Certificates", "SSL", "IIS" ]
+    },
+    {
+        "Name":  "Test-CTypeDataMember",
+        "Tags":  [ "PowerShell" ]
+    },
+    {
+        "Name":  "Test-CUncPath",
+        "Tags":  [ "Path" ]
+    },
+    {
+        "Name":  "Test-CUser",
+        "Tags":  [ "Users", "Identity", "Principal" ]
+    },
+    {
+        "Name":  "Test-CWindowsFeature",
+        "Tags":  [ "Windows Features" ]
+    },
+    {
+        "Name":  "Test-CZipFile",
+        "Tags":  [ "File System" ]
+    },
+    {
+        "Name":  "Uninstall-CCertificate",
+        "Tags":  [ "Certificates" ]
+    },
+    {
+        "Name":  "Uninstall-CDirectory",
+        "Tags":  [ "File System", "NTFS", "Directory" ]
+    },
+    {
+        "Name":  "Uninstall-CFileShare",
+        "Tags":  [ "Shares" ]
+    },
+    {
+        "Name":  "Uninstall-CGroup",
+        "Tags":  [ "Groups", "Identity", "Principal" ]
+    },
+    {
+        "Name":  "Uninstall-CIisAppPool",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Uninstall-CIisWebsite",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Uninstall-CJunction",
+        "Tags":  [ "File System" ]
+    },
+    {
+        "Name":  "Uninstall-CMsmqMessageQueue",
+        "Tags":  [ "MSMQ" ]
+    },
+    {
+        "Name":  "Uninstall-CPerformanceCounterCategory",
+        "Tags":  [ "Performance Counters" ]
+    },
+    {
+        "Name":  "Uninstall-CScheduledTask",
+        "Tags":  [ "Scheduled Tasks" ]
+    },
+    {
+        "Name":  "Uninstall-CService",
+        "Tags":  [ "Service" ]
+    },
+    {
+        "Name":  "Uninstall-CUser",
+        "Tags":  [ "Users", "Identity", "Principal" ]
+    },
+    {
+        "Name":  "Uninstall-CWindowsFeature",
+        "Tags":  [ "Windows Features", "Programs" ]
+    },
+    {
+        "Name":  "Unlock-CIisConfigurationSection",
+        "Tags":  [ "IIS" ]
+    },
+    {
+        "Name":  "Unprotect-CString",
+        "Tags":  [ "Cryptography", "Security", "Encryption" ]
+    },
+    {
+        "Name":  "Write-CDscError",
+        "Tags":  [ "DSC" ]
+    },
+    {
+        "Name":  "Write-CFile",
+        "Tags":  [ "File System", "NTFS", "Text" ]
+    }
+]
