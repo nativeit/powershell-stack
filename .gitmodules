@@ -1,75 +1,125 @@
 [submodule "native-rmm"]
 	path = native-rmm
 	url = https://github.com/nativeit/native-rmm.git
+	ignore = untracked
+
 [submodule "Carbon"]
 	path = Carbon
 	url = https://github.com/webmd-health-services/Carbon.git
+	ignore = untracked
+
 [submodule "7Zip4Powershell"]
 	path = 7Zip4Powershell
 	url = https://github.com/thoemmi/7Zip4Powershell.git
+	ignore = untracked
+
 [submodule "PSWritePDF"]
 	path = PSWritePDF
 	url = https://github.com/EvotecIT/PSWritePDF.git
+	ignore = untracked
+
 [submodule "PSWriteExcel"]
 	path = PSWriteExcel
 	url = https://github.com/EvotecIT/PSWriteExcel.git
+	ignore = untracked
+
 [submodule "PSEventViewer"]
 	path = PSEventViewer
 	url = https://github.com/EvotecIT/PSEventViewer.git
+	ignore = untracked
+
 [submodule "OpenCloudConfig"]
 	path = OpenCloudConfig
 	url = https://github.com/mozilla-releng/OpenCloudConfig.git
+	ignore = untracked
+
 [submodule "PSPrivilege"]
 	path = PSPrivilege
 	url = https://github.com/jborean93/PSPrivilege.git
+	ignore = untracked
+
 [submodule "PSWriteHTML"]
 	path = PSWriteHTML
 	url = https://github.com/EvotecIT/PSWriteHTML.git
+	ignore = untracked
+
 [submodule "Pscx"]
 	path = Pscx
 	url = https://github.com/Pscx/Pscx.git
+	ignore = untracked
+
 [submodule "WaykAgent-ps"]
 	path = WaykAgent-ps
 	url = https://github.com/Devolutions/WaykAgent-ps.git
+	ignore = untracked
+
 [submodule "WaykClient-ps"]
 	path = WaykClient-ps
 	url = https://github.com/Devolutions/WaykClient-ps.git
+	ignore = untracked
+
 [submodule "RdmHelper-ps"]
 	path = RdmHelper-ps
 	url = https://github.com/Devolutions/RdmHelper-ps.git
+	ignore = untracked
+
 [submodule "SMBIOS"]
 	path = SMBIOS
 	url = https://github.com/vanso/SMBIOS.git
+	ignore = untracked
+
 [submodule "PowerShell-Script-Menu-Gui"]
 	path = PowerShell-Script-Menu-Gui
 	url = https://github.com/dan-osull/PowerShell-Script-Menu-Gui.git
+	ignore = untracked
+
 [submodule "IPv4Toolbox"]
 	path = IPv4Toolbox
 	url = https://github.com/roberttoups/IPv4Toolbox.git
+	ignore = untracked
+
 [submodule "PoshInternals"]
 	path = PoshInternals
 	url = https://github.com/adamdriscoll/PoshInternals.git
+	ignore = untracked
+
 [submodule "AdminToolbox"]
 	path = AdminToolbox
 	url = https://github.com/TheTaylorLee/AdminToolbox.git
+	ignore = untracked
+
 [submodule "pwsh.fw.core"]
 	path = pwsh.fw.core
 	url = https://gitlab.com/pwsh.fw/pwsh.fw.core.git
+	ignore = untracked
+
 [submodule "GraphicalTools"]
 	path = GraphicalTools
 	url = https://github.com/PowerShell/GraphicalTools.git
+	ignore = untracked
+
 [submodule "PSWinGlue"]
 	path = PSWinGlue
 	url = https://github.com/ralish/PSWinGlue.git
+	ignore = untracked
+
 [submodule "Transferetto"]
 	path = Transferetto
 	url = https://github.com/EvotecIT/Transferetto.git
+	ignore = untracked
+
 [submodule "set-wallpaper"]
 	path = set-wallpaper
 	url = https://github.com/federico-paolillo/set-wallpaper.git
+	ignore = untracked
+
 [submodule "PScribo"]
 	path = PScribo
 	url = https://github.com/iainbrighton/PScribo
+	ignore = untracked
+
 [submodule "PSWinDocumentation.AD"]
 	path = PSWinDocumentation.AD
 	url = https://github.com/EvotecIT/PSWinDocumentation.AD.git
+	ignore = untracked
+
